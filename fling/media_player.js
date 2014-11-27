@@ -176,19 +176,19 @@
             var c = za(a, b),
                 d;
             (d = 0 <= c) && arrayPrototype.splice.call(a, c, 1);
-            return d
+            return d;
         },
         Fa = function(a) {
-            return arrayPrototype.concat.apply(arrayPrototype, arguments)
+            return arrayPrototype.concat.apply(arrayPrototype, arguments);
         },
         Ga = function(a) {
             var b = a.length;
             if (0 < b) {
                 for (var c =
                         Array(b), d = 0; d < b; d++) c[d] = a[d];
-                return c
+                return c;
             }
-            return []
+            return [];
         };
     var Ha = function() {
             this.startTime = start()
@@ -236,7 +236,7 @@
     Oa.prototype.next = function() {
         throw StopIteration;
     };
-    Oa.prototype.gh = function() {
+    Oa.prototype.getThis = function() {
         return this;
     };
     var Pa = function(a, b) {
@@ -258,12 +258,12 @@
             for (d in a) b[c++] = d;
             return b
         },
-        Sa = "constructor hasOwnProperty isPrototypeOf propertyIsEnumerable toLocaleString toString valueOf".split(" "),
+        methods = "constructor hasOwnProperty isPrototypeOf propertyIsEnumerable toLocaleString toString valueOf".split(" "),
         Ta = function(a, b) {
             for (var c, d, e = 1; e < arguments.length; e++) {
                 d = arguments[e];
                 for (c in d) a[c] = d[c];
-                for (var f = 0; f < Sa.length; f++) c = Sa[f], Object.prototype.hasOwnProperty.call(d, c) && (a[c] = d[c])
+                for (var f = 0; f < methods.length; f++) c = methods[f], Object.prototype.hasOwnProperty.call(d, c) && (a[c] = d[c])
             }
         };
     var Header = function(a, b) {
@@ -280,7 +280,7 @@
         }
     };
     h = Header.prototype;
-    h.na = function() {
+    h.length = function() {
         return this.w
     };
     h.ha = function() {
@@ -297,7 +297,7 @@
     };
     h.equals = function(a, b) {
         if (this === a) return !0;
-        if (this.w != a.na()) return !1;
+        if (this.w != a.length()) return !1;
         var c = b || isEqual;
         Va(this);
         for (var d, e = 0; d = this.O[e]; e++)
@@ -307,7 +307,7 @@
     var isEqual = function(a, b) {
         return a === b;
     };
-    Header.prototype.pa = function() {
+    Header.prototype.isEmpty = function() {
         return 0 == this.w
     };
     Header.prototype.clear = function() {
@@ -349,7 +349,7 @@
     h.clone = function() {
         return new Header(this)
     };
-    h.gh = function(a) {
+    h.getThis = function(a) {
         Va(this);
         var b = 0,
             c = this.O,
@@ -406,8 +406,8 @@
         }
         user_agent = ""
     }
-    var isUserAgent = function(obj) {
-        return -1 != user_agent.indexOf(obj);
+    var isUserAgent = function(agent) {
+        return -1 != user_agent.indexOf(agent);
     };
     var isOpera = isUserAgent("Opera") || isUserAgent("OPR"),
         isMsIE = isUserAgent("Trident") || isUserAgent("MSIE"),
@@ -547,16 +547,16 @@
         INFO = new v("INFO", 800),
         CONFIG = new v("CONFIG", 700),
         FINE = new v("FINE", 500),
-        OFF = [new v("OFF", Infinity), SHOUT, SEVERE, WARNING, INFO, CONFIG, FINE, new v("FINER", 400), new v("FINEST", 300), new v("ALL", 0)],
+        LOGS = [new v("OFF", Infinity), SHOUT, SEVERE, WARNING, INFO, CONFIG, FINE, new v("FINER", 400), new v("FINEST", 300), new v("ALL", 0)],
         Cb = null,
-        Db = function(a) {
+        Db = function(level) {
             if (!Cb) {
                 Cb = {};
-                for (var b = 0, c; c = OFF[b]; b++) Cb[c.value] = c, Cb[c.name] = c
+                for (var b = 0, c; c = LOGS[b]; b++) Cb[c.value] = c, Cb[c.name] = c
             }
-            if (a in Cb) return Cb[a];
-            for (b = 0; b < OFF.length; ++b)
-                if (c = OFF[b], c.value <= a) return c;
+            if (level in Cb) return Cb[level];
+            for (b = 0; b < LOGS.length; ++b)
+                if (c = LOGS[b], c.value <= level) return c;
             return null;
         };
     h = ub.prototype;
@@ -602,7 +602,7 @@
                 var f;
                 var href = ba("window.location.href");
                 if (isString(message)) f = {
-                    message: message,
+                    response: message,
                     name: "Unknown error",
                     lineNumber: "Not available",
                     fileName: href,
@@ -621,8 +621,8 @@
                     } catch (p) {
                         file_name = "Not available", b = !0
                     }
-                    f = !b && message.lineNumber && message.fileName && message.stack && message.message && message.name ? message : {
-                        message: message.message ||
+                    f = !b && message.lineNumber && message.fileName && message.stack && message.response && message.name ? message : {
+                        response: message.response ||
                             "Not available",
                         name: message.name || "UnknownError",
                         lineNumber: line_number,
@@ -630,7 +630,7 @@
                         stack: message.stack || "Not available"
                     }
                 }
-                e = "Message: " + va(f.message) + '\nUrl: <a href="view-source:' + f.fileName + '" target="_new">' + f.fileName + "</a>\nLine: " + f.lineNumber + "\n\nBrowser stack:\n" + va(f.stack + "-> ") + "[end]\n\nJS stack traversal:\n" + va(pb(d) + "-> ")
+                e = "Message: " + va(f.response) + '\nUrl: <a href="view-source:' + f.fileName + '" target="_new">' + f.fileName + "</a>\nLine: " + f.lineNumber + "\n\nBrowser stack:\n" + va(f.stack + "-> ") + "[end]\n\nJS stack traversal:\n" + va(pb(d) + "-> ")
             } catch (u) {
                 e = "Exception trying to expose exception! You win, we lose. " + u
             }
@@ -717,7 +717,7 @@
         };
     var Nb = /^(-)?P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)D)?(T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?)?$/,
         Ob = function(a, b, c, d, e, f) {
-            isString(a) ? (this.Yb = "y" == a ? b : 0, this.Xb = "self" == a ? b : 0, this.rb = "d" == a ? b : 0, this.sb = "h" == a ? b : 0, this.tb = "isString" == a ? b : 0, this.ub = "s" == a ? b : 0) : (this.Yb = a || 0, this.Xb = b || 0, this.rb = c || 0, this.sb = d || 0, this.tb = e || 0, this.ub = f || 0)
+            isString(a) ? (this.Yb = "y" == a ? b : 0, this.Xb = "self" == a ? b : 0, this.rb = "d" == a ? b : 0, this.sb = "streamIndex" == a ? b : 0, this.tb = "isString" == a ? b : 0, this.ub = "s" == a ? b : 0) : (this.Yb = a || 0, this.Xb = b || 0, this.rb = c || 0, this.sb = d || 0, this.tb = e || 0, this.ub = f || 0)
         };
     Ob.prototype.equals = function(obj) {
         return obj.Yb == this.Yb && obj.Xb == this.Xb && obj.rb == this.rb && obj.sb == this.sb && obj.tb == this.tb && obj.ub == this.ub
@@ -745,16 +745,16 @@
         if (this.Td)
             for (; this.Td.length;) this.Td.shift()()
     };
-    var Log = function(a, b) {
+    var LOGE = function(a, b) {
             a && a.log(SEVERE, b, void 0)
         },
-        z = function(a, b) {
+        LOGW = function(a, b) {
             a && a.log(WARNING, b, void 0)
         },
-        A = function(a, b) {
+        LOGI = function(a, b) {
             a && a.info(b, void 0)
         },
-        B = function(a, b) {
+        LOGF = function(a, b) {
             a && a.log(FINE, b, void 0)
         };
     var Pb = function(type, target) {
@@ -789,15 +789,15 @@
         this.relatedTarget = this.currentTarget = this.target = null;
         this.charCode = this.keyCode = this.button = this.screenY = this.screenX = this.clientY = this.clientX = this.offsetY = this.offsetX = 0;
         this.metaKey = this.shiftKey = this.altKey = this.ctrlKey = !1;
-        this.Ib = this.state = null;
+        this.event = this.state = null;
         a && this.init(a, b)
     };
     inherit(Ub, Pb);
-    Ub.prototype.init = function(a, b) {
-        var type = this.type = a.type;
-        this.target = a.target || a.srcElement;
-        this.currentTarget = b;
-        var target = a.relatedTarget;
+    Ub.prototype.init = function(event, target) {
+        var type = this.type = event.type;
+        this.target = event.target || event.srcElement;
+        this.currentTarget = target;
+        var target = event.relatedTarget;
         if (target) {
             if (isFirefox) {
                 var e;
@@ -811,33 +811,33 @@
                 }
                 e || (target = null)
             }
-        } else "mouseover" == type ? target = a.fromElement : "mouseout" == type && (target = a.toElement);
+        } else "mouseover" == type ? target = event.fromElement : "mouseout" == type && (target = event.toElement);
         this.relatedTarget = target;
-        this.offsetX = isChrome || void 0 !== a.offsetX ? a.offsetX : a.layerX;
-        this.offsetY = isChrome || void 0 !== a.offsetY ? a.offsetY : a.layerY;
-        this.clientX = void 0 !== a.clientX ? a.clientX : a.pageX;
-        this.clientY = void 0 !== a.clientY ? a.clientY :
-            a.pageY;
-        this.screenX = a.screenX || 0;
-        this.screenY = a.screenY || 0;
-        this.button = a.button;
-        this.keyCode = a.keyCode || 0;
-        this.charCode = a.charCode || ("keypress" == type ? a.keyCode : 0);
-        this.ctrlKey = a.ctrlKey;
-        this.altKey = a.altKey;
-        this.shiftKey = a.shiftKey;
-        this.metaKey = a.metaKey;
-        this.state = a.state;
-        this.Ib = a;
-        a.defaultPrevented && this.preventDefault()
+        this.offsetX = isChrome || void 0 !== event.offsetX ? event.offsetX : event.layerX;
+        this.offsetY = isChrome || void 0 !== event.offsetY ? event.offsetY : event.layerY;
+        this.clientX = void 0 !== event.clientX ? event.clientX : event.pageX;
+        this.clientY = void 0 !== event.clientY ? event.clientY :
+            event.pageY;
+        this.screenX = event.screenX || 0;
+        this.screenY = event.screenY || 0;
+        this.button = event.button;
+        this.keyCode = event.keyCode || 0;
+        this.charCode = event.charCode || ("keypress" == type ? event.keyCode : 0);
+        this.ctrlKey = event.ctrlKey;
+        this.altKey = event.altKey;
+        this.shiftKey = event.shiftKey;
+        this.metaKey = event.metaKey;
+        this.state = event.state;
+        this.event = event;
+        event.defaultPrevented && this.preventDefault()
     };
     Ub.prototype.stopPropagation = function() {
         Ub.p.stopPropagation.call(this);
-        this.Ib.stopPropagation ? this.Ib.stopPropagation() : this.Ib.cancelBubble = !0
+        this.event.stopPropagation ? this.event.stopPropagation() : this.event.cancelBubble = !0
     };
     Ub.prototype.preventDefault = function() {
         Ub.p.preventDefault.call(this);
-        var a = this.Ib;
+        var a = this.event;
         if (a.preventDefault) a.preventDefault();
         else if (a.returnValue = !1, Tb) try {
             if (a.ctrlKey || 112 <= a.keyCode && 123 >= a.keyCode) a.keyCode = -1
@@ -924,9 +924,9 @@
     var bc = "closure_lm_" + (1E6 * Math.random() | 0),
         cc = {},
         dc = 0,
-        C = function(a, obj, c, d, e) {
+        addEventListener = function(a, obj, c, d, e) {
             if ("array" == getObjType(obj))
-                for (var f = 0; f < obj.length; f++) C(a, obj[f], c, d, e);
+                for (var f = 0; f < obj.length; f++) addEventListener(a, obj[f], c, d, e);
             else if (c = ec(c), a && a[Vb]) a.listen(obj, c, d, e);
             else {
                 if (!obj) throw Error("Invalid event type");
@@ -948,21 +948,21 @@
                 };
             return b
         },
-        jc = function(a, b, c, d, e) {
+        removeEventLIstener = function(a, b, c, d, e) {
             if ("array" == getObjType(b))
-                for (var f = 0; f < b.length; f++) jc(a, b[f], c, d, e);
+                for (var f = 0; f < b.length; f++) removeEventLIstener(a, b[f], c, d, e);
             else c = ec(c), a && a[Vb] ? a.Ta.remove(String(b), c, d, e) : a && (a = fc(a)) && (b = a.Xe(b, c, !!d, e)) && kc(b)
         },
         kc = function(a) {
             if ("number" != typeof a && a && !a.removed) {
-                var b = a.src;
-                if (b && b[Vb]) ac(b.Ta, a);
+                var src = a.src;
+                if (src && src[Vb]) ac(src.Ta, a);
                 else {
-                    var c = a.type,
-                        d = a.proxy;
-                    b.removeEventListener ? b.removeEventListener(c, d, a.dd) : b.detachEvent && b.detachEvent(hc(c), d);
+                    var type = a.type,
+                        proxy = a.proxy;
+                    src.removeEventListener ? src.removeEventListener(type, proxy, a.dd) : src.detachEvent && src.detachEvent(hc(type), proxy);
                     dc--;
-                    (c = fc(b)) ? (ac(c, a), 0 == c.fd && (c.src = null, b[bc] = null)) : Yb(a)
+                    (type = fc(src)) ? (ac(type, a), 0 == type.fd && (type.src = null, src[bc] = null)) : Yb(a)
                 }
             }
         },
@@ -1037,31 +1037,31 @@
     oc.prototype[Vb] = !0;
     h = oc.prototype;
     h.addEventListener = function(a, b, c, d) {
-        C(this, a, b, c, d)
+        addEventListener(this, a, b, c, d);
     };
     h.removeEventListener = function(a, b, c, d) {
-        jc(this, a, b, c, d)
+        removeEventLIstener(this, a, b, c, d);
     };
     h.dispatchEvent = function(a) {
         var b, c = this.Oe;
         if (c)
             for (b = []; c; c = c.Oe) b.push(c);
         var c = this.fh,
-            d = a.type || a;
+            type = a.type || a;
         if (isString(a)) a = new Pb(a, c);
         else if (a instanceof Pb) a.target = a.target || c;
         else {
             var e = a;
-            a = new Pb(d, c);
+            a = new Pb(type, c);
             Ta(a, e)
         }
         var e = !0,
             f;
         if (b)
-            for (var g = b.length - 1; !a.$b && 0 <= g; g--) f = a.currentTarget = b[g], e = pc(f, d, !0, a) && e;
-        a.$b || (f = a.currentTarget = c, e = pc(f, d, !0, a) && e, a.$b || (e = pc(f, d, !1, a) && e));
+            for (var g = b.length - 1; !a.$b && 0 <= g; g--) f = a.currentTarget = b[g], e = pc(f, type, !0, a) && e;
+        a.$b || (f = a.currentTarget = c, e = pc(f, type, !0, a) && e, a.$b || (e = pc(f, type, !1, a) && e));
         if (b)
-            for (g = 0; !a.$b && g < b.length; g++) f = a.currentTarget = b[g], e = pc(f, d, !1, a) && e;
+            for (g = 0; !a.$b && g < b.length; g++) f = a.currentTarget = b[g], e = pc(f, type, !1, a) && e;
         return e
     };
     h.t = function() {
@@ -1105,8 +1105,8 @@
                 sc = !1;
                 var location = self.location;
                 if (location) {
-                    var c = location.href;
-                    if (c && (c = (c = tc(c)[3] || null) ? decodeURI(c) : c) && c != location.hostname) throw sc = !0, Error();
+                    var href = location.href;
+                    if (href && (href = (href = tc(href)[3] || null) ? decodeURI(href) : href) && href != location.hostname) throw sc = !0, Error();
                 }
             }
             return a.match(rc);
@@ -1144,12 +1144,12 @@
         this.jb = !1;
         this.vd = this.l = null;
         this.pf = this.Uri = "";
-        this.Ma = 0;
+        this.errorCode = 0;
         this.Mc = "";
         this.Hb = this.re = this.ud = this.se = !1;
         this.timeoutInterval = 0;
         this.N = null;
-        this.Oc = "";
+        this.responseType = "";
         this.wd = this.withCredentials = !1
     };
     inherit(D, oc);
@@ -1157,14 +1157,14 @@
     var Ac = /^https?$/i,
         Bc = ["POST", "PUT"],
         Cc = function(a) {
-            a.Oc = "arraybuffer";
+            a.responseType = "arraybuffer";
         };
-    D.prototype.send = function(newUri, b, c, d) {
+    D.prototype.send = function(newUri, b, uri, d) {
         if (this.l) throw Error("[goog.net.XhrIo] Object is active with another request=" + this.Uri + "; newUri=" + newUri);
         b = b ? b.toUpperCase() : "GET";
         this.Uri = newUri;
         this.Mc = "";
-        this.Ma = 0;
+        this.errorCode = 0;
         this.pf = b;
         this.se = !1;
         this.jb = !0;
@@ -1172,31 +1172,31 @@
         this.vd = this.xd ? wc(this.xd) : wc(xc);
         this.l.onreadystatechange = ia(this.tf, this);
         try {
-            B(this.a, Dc(this, "Opening Xhr")), this.re = !0, this.l.open(b, String(newUri), !0), this.re = !1
+            LOGF(this.a, Dc(this, "Opening Xhr")), this.re = !0, this.l.open(b, String(newUri), !0), this.re = !1
         } catch (e) {
-            B(this.a, Dc(this, "Error opening Xhr: " + e.message));
+            LOGF(this.a, Dc(this, "Error opening Xhr: " + e.response));
             Ec(this, e);
             return
         }
-        newUri = c || "";
+        newUri = uri || "";
         var f =
             this.headers.clone();
         d && Za(d, function(a, b) {
             f.set(b, a)
         });
         d = Da(f.ib());
-        c = self.FormData && newUri instanceof self.FormData;
-        !(0 <= za(Bc, b)) || d || c || f.set("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+        uri = self.FormData && newUri instanceof self.FormData;
+        !(0 <= za(Bc, b)) || d || uri || f.set("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
         f.forEach(function(a, b) {
             this.l.setRequestHeader(b, a)
         }, this);
-        this.Oc && (this.l.responseType = this.Oc);
+        this.responseType && (this.l.responseType = this.responseType);
         "withCredentials" in this.l && (this.l.withCredentials = this.withCredentials);
         try {
-            Fc(this), 0 < this.timeoutInterval && (this.wd = Gc(this.l), B(this.a, Dc(this, "Will abort after " + this.timeoutInterval + "ms if incomplete, xhr2 " + this.wd)), this.wd ? (this.l.timeout =
-                this.timeoutInterval, this.l.ontimeout = ia(this.oa, this)) : this.N = qc(this.oa, this.timeoutInterval, this)), B(this.a, Dc(this, "Sending request")), this.ud = !0, this.l.send(newUri), this.ud = !1
+            Fc(this), 0 < this.timeoutInterval && (this.wd = Gc(this.l), LOGF(this.a, Dc(this, "Will abort after " + this.timeoutInterval + "ms if incomplete, xhr2 " + this.wd)), this.wd ? (this.l.timeout =
+                this.timeoutInterval, this.l.ontimeout = ia(this.oa, this)) : this.N = qc(this.oa, this.timeoutInterval, this)), LOGF(this.a, Dc(this, "Sending request")), this.ud = !0, this.l.send(newUri), this.ud = !1
         } catch (g) {
-            B(this.a, Dc(this, "Send error: " + g.message)), Ec(this, g)
+            LOGF(this.a, Dc(this, "Send error: " + g.response)), Ec(this, g)
         }
     };
     var Gc = function(a) {
@@ -1209,13 +1209,13 @@
         return this.xd ? zc(this.xd) : zc(xc)
     };
     D.prototype.oa = function() {
-        "undefined" != typeof aa && this.l && (this.Mc = "Timed out after " + this.timeoutInterval + "ms, aborting", this.Ma = 8, B(this.a, Dc(this, this.Mc)), this.dispatchEvent("timeout"), this.abort(8))
+        "undefined" != typeof aa && this.l && (this.Mc = "Timed out after " + this.timeoutInterval + "ms, aborting", this.errorCode = 8, LOGF(this.a, Dc(this, this.Mc)), this.dispatchEvent("timeout"), this.abort(8))
     };
     var Ec = function(a, b) {
             a.jb = !1;
             a.l && (a.Hb = !0, a.l.abort(), a.Hb = !1);
             a.Mc = b;
-            a.Ma = 5;
+            a.errorCode = 5;
             Hc(a);
             Ic(a)
         },
@@ -1223,7 +1223,7 @@
             a.se || (a.se = !0, a.dispatchEvent("complete"), a.dispatchEvent("error"))
         };
     D.prototype.abort = function(a) {
-        this.l && this.jb && (B(this.a, Dc(this, "Aborting")), this.jb = !1, this.Hb = !0, this.l.abort(), this.Hb = !1, this.Ma = a || 7, this.dispatchEvent("complete"), this.dispatchEvent("abort"), Ic(this))
+        this.l && this.jb && (LOGF(this.a, Dc(this, "Aborting")), this.jb = !1, this.Hb = !0, this.l.abort(), this.Hb = !1, this.errorCode = a || 7, this.dispatchEvent("complete"), this.dispatchEvent("abort"), Ic(this))
     };
     D.prototype.t = function() {
         this.l && (this.jb && (this.jb = !1, this.Hb = !0, this.l.abort(), this.Hb = !1), Ic(this, !0));
@@ -1237,10 +1237,10 @@
     };
     var Jc = function(a) {
             if (a.jb && "undefined" != typeof aa)
-                if (a.vd[1] && 4 == Kc(a) && 2 == Lc(a)) B(a.a, Dc(a, "Local request error detected and ignored"));
+                if (a.vd[1] && 4 == Kc(a) && 2 == Lc(a)) LOGF(a.a, Dc(a, "Local request error detected and ignored"));
                 else if (a.ud && 4 == Kc(a)) qc(a.tf, 0, a);
             else if (a.dispatchEvent("readystatechange"), 4 == Kc(a)) {
-                B(a.a, Dc(a, "Request complete"));
+                LOGF(a.a, Dc(a, "Request complete"));
                 a.jb = !1;
                 try {
                     var b = Lc(a),
@@ -1262,20 +1262,20 @@
                         var e;
                         if (e = 0 === b) {
                             var f = tc(String(a.Uri))[1] || null;
-                            if (!f && self.location) var g = self.location.protocol,
-                                f = g.substr(0, g.length - 1);
+                            if (!f && self.location) var protocol = self.location.protocol,
+                                f = protocol.substr(0, protocol.length - 1);
                             e = !Ac.test(f ? f.toLowerCase() : "")
                         }
                         c = e
                     }
                     if (c) a.dispatchEvent("complete"), a.dispatchEvent("success");
                     else {
-                        a.Ma = 6;
+                        a.errorCode = 6;
                         var k;
                         try {
                             k = 2 < Kc(a) ? a.l.statusText : ""
                         } catch (l) {
-                            B(a.a, "Can not get status: " + l.message), k = ""
+                            LOGF(a.a, "Can not get status: " + l.response), k = ""
                         }
                         a.Mc = k + " [" + Lc(a) + "]";
                         Hc(a)
@@ -1296,7 +1296,7 @@
                 try {
                     c.onreadystatechange = onReadyStateChange;
                 } catch (e) {
-                    Log(a.a, "Problem encountered resetting onreadystatechange: " + e.message)
+                    LOGE(a.a, "Problem encountered resetting onreadystatechange: " + e.response)
                 }
             }
         },
@@ -1322,17 +1322,17 @@
             try {
                 if (!a.l) return null;
                 if ("response" in a.l) return a.l.response;
-                switch (a.Oc) {
+                switch (a.responseType) {
                     case "":
                     case "text":
                         return a.l.responseText;
                     case "arraybuffer":
                         if ("mozResponseArrayBuffer" in a.l) return a.l.mozResponseArrayBuffer;
                 }
-                Log(a.a, "Response type " + a.Oc + " is not supported on this browser");
+                LOGE(a.a, "Response type " + a.responseType + " is not supported on this browser");
                 return null;
             } catch (b) {
-                return B(a.a, "Can not get response: " + b.message), null;
+                return LOGF(a.a, "Can not get response: " + b.response), null;
             }
         };
     D.prototype.getResponseHeader = function(a) {
@@ -1361,10 +1361,10 @@
             return a[a.length - 1]
         };
     h = Nc.prototype;
-    h.na = function() {
+    h.length = function() {
         return this.ea.length + this.S.length
     };
-    h.pa = function() {
+    h.isEmpty = function() {
         return 0 == this.ea.length && 0 == this.S.length
     };
     h.clear = function() {
@@ -1414,7 +1414,7 @@
     h.port = null;
     h.Ha = "";
     h.Tb = "";
-    h.ih = !1;
+    h.readOnly = !1;
     h.ma = !1;
     h.toString = function() {
         var a = [],
@@ -1488,7 +1488,7 @@
             b instanceof Vc ? (a.Ua = b, a.Ua.We(a.ma)) : (c || (b = Wc(b, ad)), a.Ua = new Vc(b, 0, a.ma))
         },
         F = function(a) {
-            if (a.ih) throw Error("Tried to modify a read-only Uri");
+            if (a.readOnly) throw Error("Tried to modify a read-only Uri");
         };
     E.prototype.We = function(a) {
         this.ma = a;
@@ -1529,7 +1529,7 @@
     h = Vc.prototype;
     h.F = null;
     h.w = null;
-    h.na = function() {
+    h.length = function() {
         dd(this);
         return this.w
     };
@@ -1552,7 +1552,7 @@
         this.F = this.da = null;
         this.w = 0
     };
-    h.pa = function() {
+    h.isEmpty = function() {
         dd(this);
         return 0 == this.w
     };
@@ -1673,11 +1673,11 @@
     RequestStatus.prototype.url = RequestStatus.prototype.url;
     RequestStatus.prototype.errorCode = RequestStatus.prototype.errorCode;
     RequestStatus.prototype.status = RequestStatus.prototype.status;
-    var StreamInfo = function(a, b, c, d) {
-        this.codecs = a;
-        this.mimeType = b;
-        this.bitrates = c;
-        this.language = d || null
+    var StreamInfo = function(codecs, mimeType, bitrates, language) {
+        this.codecs = codecs;
+        this.mimeType = mimeType;
+        this.bitrates = bitrates;
+        this.language = language || null
     };
     r("cast.player.api.StreamInfo", StreamInfo);
     StreamInfo.prototype.codecs = StreamInfo.prototype.codecs;
@@ -1685,8 +1685,8 @@
     StreamInfo.prototype.bitrates = StreamInfo.prototype.bitrates;
     StreamInfo.prototype.language = StreamInfo.prototype.language;
     window.VTTCue = window.VTTCue || window.TextTrackCue;
-    var setLoggerLevel = function(a) {
-        Ib().Ye(Db(a))
+    var setLoggerLevel = function(level) {
+        Ib().Ye(Db(level))
     };
     r("cast.player.api.setLoggerLevel", setLoggerLevel);
     var fd = Mb = new Jb;
@@ -1698,15 +1698,15 @@
         fd.$f = !0
     }
     setLoggerLevel(1E3);
-    var Host = function(a) {
+    var Host = function(options) {
         this.initialBandwidth = 2097152;
         this.autoResumeDuration = 10;
         this.autoPauseDuration = 1;
-        this.mediaElement = a.mediaElement;
-        this.url = a.url;
-        this.licenseUrl = a.licenseUrl || null;
-        this.licenseCustomData = a.licenseCustomData || null;
-        this.processLicense = this.processMetadata = this.prepareLicenseRequest = this.getQualityLevel = this.trackBandwidth = this.updateCaptionsRequestInfo = this.updateSegmentRequestInfo = this.updateLicenseRequestInfo = this.updateManifestRequestInfo = this.onError = null
+        this.mediaElement = options.mediaElement;
+        this.url = options.url;
+        this.licenseUrl = options.licenseUrl || null;
+        this.licenseCustomData = options.licenseCustomData || null;
+        this.processLicense = this.processMetadata = this.prepareLicenseRequest = this.getQualityLevel = this.trackBandwidth = this.updateCaptionsRequestInfo = this.updateSegmentRequestInfo = this.updateLicenseRequestInfo = this.updateManifestRequestInfo = this.onError = null;
     };
     r("cast.player.api.Host", Host);
     Host.prototype.onError = Host.prototype.onError;
@@ -1719,8 +1719,8 @@
     Host.prototype.prepareLicenseRequest = Host.prototype.prepareLicenseRequest;
     Host.prototype.processMetadata = Host.prototype.processMetadata;
     Host.prototype.processLicense = Host.prototype.processLicense;
-    var K = function(a, b, c) {
-        if (a.onError) a.onError(b, c)
+    var K = function(a, errorCode, requestStatus) {
+        if (a.onError) a.onError(errorCode, requestStatus);
     };
     var jd = function(a, b) {
             var c;
@@ -1913,10 +1913,10 @@
         this.headers = this.url = null;
         this.Y = 0;
         this.e = new D;
-        C(this.e, "success", this.Ec, !1, this);
-        C(this.e, "error", this.yb, !1, this);
-        C(this.e, "timeout", this.Ff, !1, this);
-        C(this.e, "ready", this.je, !1, this)
+        addEventListener(this.e, "success", this.Ec, !1, this);
+        addEventListener(this.e, "error", this.yb, !1, this);
+        addEventListener(this.e, "timeout", this.Ff, !1, this);
+        addEventListener(this.e, "ready", this.je, !1, this)
     };
     inherit(R, x);
     R.prototype.t = function() {
@@ -1938,7 +1938,7 @@
         return this.url
     };
     var Cd = function(a) {
-        return new RequestStatus(a.url, a.e.Ma, Lc(a.e))
+        return new RequestStatus(a.url, a.e.errorCode, Lc(a.e))
     };
     R.prototype.Ec = function(a) {
         a = Mc(a.target);
@@ -1975,38 +1975,38 @@
             this.Ra = this.Kb = this.uri = null;
             this.IsLive = !1;
             this.duration = -1;
-            this.n = []
+            this.streams = []
         };
     StreamingProtocolBase.prototype.getStreamCount = function() {
-        return this.n.length
+        return this.streams.length;
     };
     r("cast.player.common.StreamingProtocolBase.prototype.getStreamCount", StreamingProtocolBase.prototype.getStreamCount);
-    StreamingProtocolBase.prototype.enableStream = function(a, enabled) {
-        var c = this.n[a];
-        3 !== c.type && (c.ca = !0);
-        c.index = -1;
-        c.C = -1;
-        c.enabled = enabled;
+    StreamingProtocolBase.prototype.enableStream = function(index, enabled) {
+        var stream = this.streams[index];
+        3 !== stream.type && (stream.ca = !0);
+        stream.index = -1;
+        stream.qualityLevel = -1;
+        stream.enabled = enabled;
     };
     r("cast.player.common.StreamingProtocolBase.prototype.enableStream", StreamingProtocolBase.prototype.enableStream);
-    StreamingProtocolBase.prototype.isStreamEnabled = function(a) {
-        return this.n[a].enabled;
+    StreamingProtocolBase.prototype.isStreamEnabled = function(index) {
+        return this.streams[index].enabled;
     };
     r("cast.player.common.StreamingProtocolBase.prototype.isStreamEnabled", StreamingProtocolBase.prototype.isStreamEnabled);
-    StreamingProtocolBase.prototype.getQualityLevel = function(a) {
-        return this.n[a].C;
+    StreamingProtocolBase.prototype.getQualityLevel = function(index) {
+        return this.streams[index].qualityLevel;
     };
     r("cast.player.common.StreamingProtocolBase.prototype.getQualityLevel", StreamingProtocolBase.prototype.getQualityLevel);
-    StreamingProtocolBase.prototype.getStreamInfo = function(a) {
-        a = this.n[a];
-        for (var b = [], c = 0; c < a.s.length; c++) b.push(a.s[c].V);
-        return new StreamInfo(a.codecs, a.mimeType, b, a.language)
+    StreamingProtocolBase.prototype.getStreamInfo = function(index) {
+        index = this.streams[index];
+        for (var bitrates = [], c = 0; c < index.s.length; c++) bitrates.push(index.s[c].V);
+        return new StreamInfo(index.codecs, index.mimeType, bitrates, index.language)
     };
     r("cast.player.common.StreamingProtocolBase.prototype.getStreamInfo", StreamingProtocolBase.prototype.getStreamInfo);
     h = StreamingProtocolBase.prototype;
     h.Ba = function() {
-        for (var a = !0, b = !0, c = 0; c < this.n.length; c++) {
-            var d = this.n[c];
+        for (var a = !0, b = !0, c = 0; c < this.streams.length; c++) {
+            var d = this.streams[c];
             1 === d.type ? (d.enabled = a, a = !1) : 2 === d.type && (d.enabled = b, b = !1)
         }
         this.Ra.Fd();
@@ -2019,47 +2019,47 @@
     h.Zf = function() {
         var url = this.host.url;
         this.uri = new E(url);
-        var b = new RequestInfo;
-        b.url = url;
-        this.host.updateManifestRequestInfo && this.host.updateManifestRequestInfo(b);
+        var requestInfo = new RequestInfo;
+        requestInfo.url = url;
+        this.host.updateManifestRequestInfo && this.host.updateManifestRequestInfo(requestInfo);
         this.Kb = new R(this);
-        this.Kb.load(b)
+        this.Kb.load(requestInfo)
     };
     h.pb = function() {
         this.Kb && (this.Kb.dispose(), this.Kb = null)
     };
-    h.Md = function(a, b, c) {
-        a = this.n[a];
-        a.C = b;
+    h.Md = function(a, qualityLevel, c) {
+        a = this.streams[a];
+        a.qualityLevel = qualityLevel;
         3 !== a.type && (a.ca = !0);
         Ed(c)
     };
     h.Ed = function() {
-        return null
+        return null;
     };
     h.updateLicenseRequestInfo = function() {};
-    h.Xf = function() {
-        return this.IsLive ? -1 : this.duration
+    h.getDuration = function() {
+        return this.IsLive ? -1 : this.duration;
     };
-    h.qa = function(a) {
-        a = this.n[a];
-        var b = a.C;
+    h.qa = function(stream) {
+        stream = this.streams[stream];
+        var b = stream.qualityLevel;
         if (0 > b) return null;
-        a = a.s[b];
-        var c = a.g;
+        stream = stream.s[b];
+        var c = stream.g;
         if (0 === c.length) return null;
         var b = c[0].time,
             d = c.length - 1,
             c = c[d].time + c[d].duration;
         this.IsLive && (c -= 20, c < b && (c = b));
         return {
-            start: b - a.presentationTimeOffset,
-            end: c - a.presentationTimeOffset
+            start: b - stream.presentationTimeOffset,
+            end: c - stream.presentationTimeOffset
         }
     };
     h.seek = function(a, b) {
-        var c = this.n[a],
-            d = c.s[c.C],
+        var c = this.streams[a],
+            d = c.s[c.qualityLevel],
             e = d.g,
             f = this.qa(a);
         if (!f) return !1;
@@ -2071,19 +2071,19 @@
         return !1
     };
     h.cb = function(a) {
-        a = this.n[a];
+        a = this.streams[a];
         var b = a.index + 1;
-        return b < a.s[a.C].g.length ? (a.index = b, !0) : !1
+        return b < a.s[a.qualityLevel].g.length ? (a.index = b, !0) : !1
     };
     h.eb = function(a) {
-        var b = this.n[a];
+        var b = this.streams[a];
         a = b.index;
-        b = b.s[b.C].g;
+        b = b.s[b.qualityLevel].g;
         return !this.IsLive && a === b.length - 1
     };
     h.va = function(a) {
-        var b = this.n[a],
-            c = b.C;
+        var b = this.streams[a],
+            c = b.qualityLevel;
         return 0 <= c && (a = b.index, 0 <= a) ? (b = b.s[c], c = b.g, {
             time: c[a].time - b.presentationTimeOffset,
             duration: c[a].duration
@@ -2093,10 +2093,10 @@
         }
     };
     h.reset = function(a) {
-        this.n[a].index = -1
+        this.streams[a].index = -1
     };
     h.Df = function(a) {
-        return this.n[a].ca
+        return this.streams[a].ca
     };
     h.Ie = function() {
         return null
@@ -2107,7 +2107,7 @@
         this.f = null;
         this.Tc = this.Sc = this.Cf = this.Fe = this.Ld = this.Zc = this.r = 0
     };
-    Fd.prototype.pa = function() {
+    Fd.prototype.isEmpty = function() {
         return null === this.f
     };
     Fd.prototype.init = function(a) {
@@ -2197,13 +2197,13 @@
     PlayerCallbacks.prototype.zc = function() {};
     PlayerCallbacks.prototype.vf = function() {};
     PlayerCallbacks.prototype.Ef = function() {};
-    var Jd = function(a, b, c) {
-        this.c = a;
-        this.h = b;
+    var Jd = function(host, streamIndex, c) {
+        this.host = host;
+        this.streamIndex = streamIndex;
         this.Lb = c;
-        this.initialBandwidth = this.c.initialBandwidth;
-        this.Cc = 0;
-        this.pd = null
+        this.initialBandwidth = this.host.initialBandwidth;
+        this.size = 0;
+        this.pd = null;
     };
     Jd.prototype.a = w("cast.player.core.QualityManager");
     Jd.prototype.oe = function(a, b) {
@@ -2218,8 +2218,8 @@
             this.Lb[f] > this.Lb[g] && (f = g)
         }
         date = 0 > d ? f : d;
-        this.c.getQualityLevel && (date = this.c.getQualityLevel(this.h, date));
-        date !== a && A(this.a, this.h + ": from " + this.Lb[a] + " to " + this.Lb[date]);
+        this.host.getQualityLevel && (date = this.host.getQualityLevel(this.streamIndex, date));
+        date !== a && LOGI(this.a, this.streamIndex + ": from " + this.Lb[a] + " to " + this.Lb[date]);
         return date
     };
     var ProcessSourceDataCallback = function() {};
@@ -2229,19 +2229,19 @@
         x.call(this);
         this.qg = d;
         this.mediasource = c;
-        this.h = a;
+        this.streamIndex = a;
         this.zd = !1;
         this.ia = null;
         this.ra = this.mediasource.addSourceBuffer(b.mimeType + '; codecs="' + b.codecs + '"');
         this.Db = new Nc;
         this.Nc = 0;
-        C(this.ra, "updateend", this.Af, !1, this)
+        addEventListener(this.ra, "updateend", this.Af, !1, this)
     };
     inherit(Ld, x);
     h = Ld.prototype;
     h.t = function() {
         this.Db.clear();
-        jc(this.ra, "updateend", this.Af, !1, this);
+        removeEventLIstener(this.ra, "updateend", this.Af, !1, this);
         "closed" !== this.mediasource.readyState && this.mediasource.removeSourceBuffer(this.ra);
         Ld.p.t.call(this)
     };
@@ -2251,53 +2251,53 @@
     };
     h.reset = function() {
         this.ia = null;
-        this.Kc() ? Md(this) : (A(this.a, this.h + ": queue abort"), this.Db.S.push({
+        this.Kc() ? Md(this) : (LOGI(this.a, this.streamIndex + ": queue abort"), this.Db.S.push({
             ve: 0,
             ue: null
         }));
-        this.Kc() ? Nd(this) : (A(this.a, this.h + ": queue remove"), this.Db.S.push({
+        this.Kc() ? Nd(this) : (LOGI(this.a, this.streamIndex + ": queue remove"), this.Db.S.push({
             ve: 1,
             ue: null
         }))
     };
     h.Kc = function() {
-        return !this.zd && this.Db.pa()
+        return !this.zd && this.Db.isEmpty()
     };
     h.Af = function() {
-        for (var a = this.ra.buffered, b = 0; b < a.length; b++) A(this.a, this.h + ": " + a.start(b) + " - " + a.end(b));
-        A(this.a, this.h + ": updateend");
-        for (this.zd = !1; !this.Db.pa();) switch (a = Pc(this.Db), b = a.ue, a.ve) {
+        for (var a = this.ra.buffered, b = 0; b < a.length; b++) LOGI(this.a, this.streamIndex + ": " + a.start(b) + " - " + a.end(b));
+        LOGI(this.a, this.streamIndex + ": updateend");
+        for (this.zd = !1; !this.Db.isEmpty();) switch (a = Pc(this.Db), b = a.ue, a.ve) {
             case 2:
-                A(this.a, this.h + ": dequeue append");
+                LOGI(this.a, this.streamIndex + ": dequeue append");
                 this.Nc -= b.interval.duration;
                 Od(this, b.data, b.interval, b.presentationTimeOffset, b.K);
                 return;
             case 1:
-                A(this.a, this.h + ": dequeue remove");
+                LOGI(this.a, this.streamIndex + ": dequeue remove");
                 Nd(this);
                 return;
             case 0:
-                A(this.a, this.h + ": dequeue abort"), Md(this)
+                LOGI(this.a, this.streamIndex + ": dequeue abort"), Md(this)
         }
     };
     var Od = function(a, b, c, d, e) {
-            e ? (Md(a), c.time = Pd(a, c.time), a.ra.timestampOffset = c.time - d, A(a.a, a.h + ": timestampOffset = " + a.ra.timestampOffset)) : c.time = Pd(a, c.time);
-            A(a.a, a.h + ": append");
+            e ? (Md(a), c.time = Pd(a, c.time), a.ra.timestampOffset = c.time - d, LOGI(a.a, a.streamIndex + ": timestampOffset = " + a.ra.timestampOffset)) : c.time = Pd(a, c.time);
+            LOGI(a.a, a.streamIndex + ": append");
             a.zd = !0;
             a.ra.appendBuffer(b);
             a.ia = c;
             a.qg.Id(b, a.ra.timestampOffset)
         },
         Md = function(a) {
-            "open" === a.mediasource.readyState ? (A(a.a, a.h + ": abort"), a.ra.abort()) : z(a.a, a.h + ": unable to abort")
+            "open" === a.mediasource.readyState ? (LOGI(a.a, a.streamIndex + ": abort"), a.ra.abort()) : LOGW(a.a, a.streamIndex + ": unable to abort")
         },
         Nd = function(a) {
-            A(a.a, a.h + ": remove");
+            LOGI(a.a, a.streamIndex + ": remove");
             a.zd = !0;
             a.ra.remove(0, a.mediasource.duration)
         };
     Ld.prototype.append = function(a, b, c, d) {
-        this.Kc() ? Od(this, a, b, c, d) : (A(this.a, this.h + ": queue append"), this.Nc += b.duration, this.Db.S.push({
+        this.Kc() ? Od(this, a, b, c, d) : (LOGI(this.a, this.streamIndex + ": queue append"), this.Nc += b.duration, this.Db.S.push({
             ve: 2,
             ue: {
                 data: a,
@@ -2313,7 +2313,7 @@
             var e = c.end(d);
             if (b >= c.start(d) && b <= e) break;
             if (e < b) {
-                A(a.a, "adjustTime: " + b + " : " + e);
+                LOGI(a.a, "adjustTime: " + b + " : " + e);
                 b = e;
                 break
             }
@@ -2337,7 +2337,7 @@
                 if (c = c[0].match(Rd)) {
                     var e = parseFloat(c[1]);
                     switch (c[2]) {
-                        case "h":
+                        case "streamIndex":
                             d = 3600 * e;
                             break;
                         case "self":
@@ -2352,7 +2352,7 @@
                         case "f":
                             d = e / a.Nd
                     }
-                } else z(a.a, "unsupported time expression: " + b);
+                } else LOGW(a.a, "unsupported time expression: " + b);
                 return d
             }
             d = 3600 * parseInt(c[0], 10) + 60 * parseInt(c[1], 10) + parseFloat(c[2]);
@@ -2373,12 +2373,12 @@
         var c = [],
             d = (new DOMParser).parseFromString(a, "text/xml"),
             e = Sd(d.childNodes, "tt");
-        if (!e) return z(this.a, "missing tt"), c;
+        if (!e) return LOGW(this.a, "missing tt"), c;
         d = Sd(e.childNodes, "body");
-        if (!d) return z(this.a, "missing body"), c;
-        (e = e.attributes.getNamedItem("ttp:frameRate")) ? this.Nd = parseInt(e.value, 10): (z(this.a, "defaulting frameRate to30"), this.Nd = 30);
+        if (!d) return LOGW(this.a, "missing body"), c;
+        (e = e.attributes.getNamedItem("ttp:frameRate")) ? this.Nd = parseInt(e.value, 10): (LOGW(this.a, "defaulting frameRate to30"), this.Nd = 30);
         d = Sd(d.childNodes, "div");
-        if (!d) return z(this.a, "missing div"), c;
+        if (!d) return LOGW(this.a, "missing div"), c;
         for (e = 0; e < d.childNodes.length; e++) {
             var f = d.childNodes[e];
             if ("p" === f.localName) {
@@ -2387,7 +2387,7 @@
                     var p = f.attributes[q];
                     "begin" === p.localName ? g = Td(this, p.value) + b : "end" === p.localName && (k = Td(this, p.value) + b)
                 }
-                l && null !== g && null !== k ? c.push(new VTTCue(g, k, l)) : z(this.a, "skipped cue, begin=" + g + ", end=" + k + ", text=" + a)
+                l && null !== g && null !== k ? c.push(new VTTCue(g, k, l)) : LOGW(this.a, "skipped cue, begin=" + g + ", end=" + k + ", text=" + a)
             }
         }
         return c
@@ -2409,7 +2409,7 @@
                 break
             }
         b = d + (f - e);
-        if (isNaN(b)) return z(this.a, "invalid time offset"), [];
+        if (isNaN(b)) return LOGW(this.a, "invalid time offset"), [];
         d = [];
         for (e = 1; e < c.length; e++)
             if (c[e]) {
@@ -2420,29 +2420,29 @@
                         break
                     }
                 p ? (q = be(this, p[1]), p =
-                    be(this, p[2]), l = l.slice(u + 1).join("\n"), isNaN(q) || isNaN(p) || !l ? (z(this.a, "skipped cue, begin=" + q + ", end=" + p + ", text=" + l), f = null) : (k = new VTTCue(q + k, p + k, l), f && (k.align = f[1]), g && (k.position = g[1]), f = k)) : (z(this.a, "no timestamps in cue=" + q), f = null);
+                    be(this, p[2]), l = l.slice(u + 1).join("\n"), isNaN(q) || isNaN(p) || !l ? (LOGW(this.a, "skipped cue, begin=" + q + ", end=" + p + ", text=" + l), f = null) : (k = new VTTCue(q + k, p + k, l), f && (k.align = f[1]), g && (k.position = g[1]), f = k)) : (LOGW(this.a, "no timestamps in cue=" + q), f = null);
                 f && d.push(f)
             }
         return d
     };
     var be = function(a, b) {
         var c = b.split(":");
-        if (3 < c.length) return z(a.a, "unexpected time format=" + b), 0;
+        if (3 < c.length) return LOGW(a.a, "unexpected time format=" + b), 0;
         for (var d = 0, e = 0; e < c.length; e++) d = 60 * d + parseFloat(c[e]);
         return d
     };
-    var ce = function(a, b, c) {
+    var ce = function(a, mediaElement, type) {
         x.call(this);
-        this.q = b;
+        this.mediaElement = mediaElement;
         this.Wc = document.createElement("track");
         this.Wc.src = "";
         this.Wc.kind = "captions";
-        this.q.appendChild(this.Wc);
+        this.mediaElement.appendChild(this.Wc);
         this.Pb = this.Wc.track;
         this.Pb.mode = "showing";
         this.Rg = a;
-        this.Fb = c;
-        "ttml" === c ? this.Qe = new Qd : "webvtt" === c && (this.Qe = new Vd);
+        this.Fb = type;
+        "ttml" === type ? this.Qe = new Qd : "webvtt" === type && (this.Qe = new Vd);
         this.ia = null;
         this.Pe = 0
     };
@@ -2450,7 +2450,7 @@
     ce.prototype.t = function() {
         de(this);
         this.Pb.mode = "disabled";
-        this.q.removeChild(this.Wc);
+        this.mediaElement.removeChild(this.Wc);
         ce.p.t.call(this)
     };
     var de = function(a) {
@@ -2509,13 +2509,13 @@
     ce.prototype.parse = function(a, b) {
         for (var c = this.Qe.parse(a, b); 0 < c.length;) this.addCue(c.pop())
     };
-    var fe = function(a, b, c, d) {
-        ce.call(this, a, b.mediaElement, c);
-        a = new RequestInfo;
-        a.url = d;
-        b.updateCaptionsRequestInfo && b.updateCaptionsRequestInfo(a);
+    var fe = function(requestInfo, host, opt_type, opt_url) {
+        ce.call(this, requestInfo, host.mediaElement, opt_type);
+        requestInfo = new RequestInfo;
+        requestInfo.url = opt_url;
+        host.updateCaptionsRequestInfo && host.updateCaptionsRequestInfo(requestInfo);
         this.ga = new R(this);
-        this.ga.load(a)
+        this.ga.load(requestInfo);
     };
     inherit(fe, ce);
     fe.prototype.t = function() {
@@ -2542,14 +2542,14 @@
         this.Vb && (this.Vb.onprogress = null);
         ge.p.t.call(this)
     };
-    var he = function(a, b, c, d, e) {
+    var he = function(a, b, c, index, e) {
         x.call(this);
         this.wa = a;
-        this.c = b;
-        this.o = c;
-        this.h = d;
-        c = c.getStreamInfo(d);
-        this.cc = la(c.mimeType, "text/") ? new ce(a, b.mediaElement, c.codecs) : new Ld(d, c, e, a);
+        this.host = b;
+        this.protocol = c;
+        this.streamIndex = index;
+        c = c.getStreamInfo(index);
+        this.cc = la(c.mimeType, "text/") ? new ce(a, b.mediaElement, c.codecs) : new Ld(index, c, e, a);
         this.kd = !1;
         this.k = 1;
         this.hd = 0;
@@ -2557,14 +2557,14 @@
         this.Y = 0;
         this.wc = this.ec = this.md = !1;
         this.dc = new Nc;
-        this.R = new RequestInfo;
+        this.requestInfo = new RequestInfo;
         this.e = new ge(this.fe.bind(this));
         Cc(this.e);
-        C(this.e, "success", this.Ec, !1, this);
-        C(this.e, "error", this.yb, !1, this);
-        C(this.e, "timeout", this.yb, !1, this);
-        C(this.e, "ready", this.je, !1, this);
-        this.ld = new Jd(b, d, this.o.getStreamInfo(this.h).bitrates)
+        addEventListener(this.e, "success", this.Ec, !1, this);
+        addEventListener(this.e, "error", this.yb, !1, this);
+        addEventListener(this.e, "timeout", this.yb, !1, this);
+        addEventListener(this.e, "ready", this.je, !1, this);
+        this.ld = new Jd(b, index, this.protocol.getStreamInfo(this.streamIndex).bitrates)
     };
     inherit(he, x);
     he.prototype.a = w("cast.player.core.SegmentManager");
@@ -2577,28 +2577,28 @@
         ie(this, !0)
     };
     var ie = function(a, b) {
-            var c = a.o.getQualityLevel(a.h),
+            var c = a.protocol.getQualityLevel(a.streamIndex),
                 d = a.ld.oe(c, b);
             if (d === c) return !1;
             a.kd = !0;
-            a.o.Md(a.h, d, a);
+            a.protocol.Md(a.streamIndex, d, a);
             return !0
         },
         je = function(a, b, c, d, e) {
-            a.ec ? (A(a.a, a.h + ": segment processed"), a.ec = !1, a.cc.append(b, c, d, e)) : A(a.a, a.h + ": not processing");
-            a.dc.pa() || (A(a.a, a.h + ": dequeue segment"), a.yc(Pc(a.dc)), a.wa.zc(a.h))
+            a.ec ? (LOGI(a.a, a.streamIndex + ": segment processed"), a.ec = !1, a.cc.append(b, c, d, e)) : LOGI(a.a, a.streamIndex + ": not processing");
+            a.dc.isEmpty() || (LOGI(a.a, a.streamIndex + ": dequeue segment"), a.yc(Pc(a.dc)), a.wa.zc(a.streamIndex))
         },
         ke = function(a, b) {
-            a.ec ? (A(a.a, a.h + ": queue segment"), a.dc.S.push(b)) : a.yc(b)
+            a.ec ? (LOGI(a.a, a.streamIndex + ": queue segment"), a.dc.S.push(b)) : a.yc(b)
         };
     h = he.prototype;
     h.yc = function(a) {
-        A(this.a, this.h + ": process segment");
+        LOGI(this.a, this.streamIndex + ": process segment");
         this.ec = !0;
-        this.o.Ob(this.h, a, this)
+        this.protocol.Ob(this.streamIndex, a, this)
     };
     h.reset = function() {
-        A(this.a, this.h + ": reset");
+        LOGI(this.a, this.streamIndex + ": reset");
         this.k = 1;
         this.hd = 0;
         this.jd = !1;
@@ -2606,48 +2606,48 @@
         this.ec = this.md = !1;
         this.dc.clear();
         this.wc || this.e.abort();
-        this.o.reset(this.h);
+        this.protocol.reset(this.streamIndex);
         this.cc.reset();
-        this.wa.zc(this.h)
+        this.wa.zc(this.streamIndex)
     };
     h.Ec = function(a) {
         a = Mc(a.target);
         var b = this.ld,
-            c = Date.now() - this.hd,
-            d = a.byteLength;
-        b.c.trackBandwidth && b.c.trackBandwidth(b.h, c, d);
-        0 >= c ? z(b.a, "bad time on success") : (c = 8E3 * d / c, b.initialBandwidth = .8 * c + (1 - .8) * b.initialBandwidth, A(b.a, b.h + ": current=" + c.toFixed(2) + ", average=" + b.initialBandwidth.toFixed(2)));
-        this.Y = b.Cc = 0;
+            time = Date.now() - this.hd,
+            size = a.byteLength;
+        b.host.trackBandwidth && b.host.trackBandwidth(b.streamIndex, time, size);
+        0 >= time ? LOGW(b.a, "bad time on success") : (time = 8E3 * size / time, b.initialBandwidth = .8 * time + (1 - .8) * b.initialBandwidth, LOGI(b.a, b.streamIndex + ": current=" + time.toFixed(2) + ", average=" + b.initialBandwidth.toFixed(2)));
+        this.Y = b.size = 0;
         this.jd = !1;
         ke(this, new Uint8Array(a));
         if (this.wc) this.wc = !1;
-        else if (ie(this, 10 > this.cc.ya(this.wa.fc())), this.kd) return;
-        2 > this.dc.na() && this.wa.zc(this.h)
+        else if (ie(this, 10 > this.cc.getBufferDuration(this.wa.fc())), this.kd) return;
+        2 > this.dc.length() && this.wa.zc(this.streamIndex)
     };
     h.je = function() {
         this.md && (le(this), this.md = !1)
     };
     h.yb = function() {
         var a = this.ld,
-            b = Date.now() - this.hd;
-        a.c.trackBandwidth && a.c.trackBandwidth(a.h, b, a.Cc);
-        0 >= b ? (z(a.a, "bad time on error"), a.initialBandwidth = 0) : a.initialBandwidth = 8E3 * a.Cc / b;
-        a.Cc = 0;
+            time = Date.now() - this.hd;
+        a.host.trackBandwidth && a.host.trackBandwidth(a.streamIndex, time, a.size);
+        0 >= time ? (LOGW(a.a, "bad time on error"), a.initialBandwidth = 0) : a.initialBandwidth = 8E3 * a.size / time;
+        a.size = 0;
         a.pd = null;
-        A(a.a, a.h + ": current=" + a.initialBandwidth.toFixed(2));
-        0 === this.Y && ie(this, !0) ? this.jd = !0 : (this.Y++, 3 < this.Y ? (this.k = -1, K(this.c, 3, new RequestStatus(this.R.url, this.e.Ma, Lc(this.e)))) : le(this))
+        LOGI(a.a, a.streamIndex + ": current=" + a.initialBandwidth.toFixed(2));
+        0 === this.Y && ie(this, !0) ? this.jd = !0 : (this.Y++, 3 < this.Y ? (this.k = -1, K(this.host, 3, new RequestStatus(this.requestInfo.url, this.e.errorCode, Lc(this.e)))) : le(this))
     };
     h.fe = function(a) {
-        this.ld.Cc = a.loaded
+        this.ld.size = a.loaded
     };
     h.ya = function(a) {
-        return this.cc.ya(a)
+        return this.cc.getBufferDuration(a)
     };
     var Ed = function(a) {
             a.kd = !1;
             a.wa.Ef();
-            if (a.o.Df(a.h)) {
-                var b = a.o.Ie(a.h);
+            if (a.protocol.Df(a.streamIndex)) {
+                var b = a.protocol.Ie(a.streamIndex);
                 if (!b) {
                     a.wc = !0;
                     le(a);
@@ -2655,23 +2655,23 @@
                 }
                 ke(a, b)
             }
-            a.wa.zc(a.h)
+            a.wa.zc(a.streamIndex)
         },
         le = function(a) {
-            a.e.vb() ? a.md = !0 : (a.hd = Date.now(), a.o.updateSegmentRequestInfo(a.h, a.R), a.R.timeoutInterval = Math.max(2E3 * (a.wc ? 0 : a.o.va(a.h).duration), 1E4), a.c.updateSegmentRequestInfo && a.c.updateSegmentRequestInfo(a.R), a.e.withCredentials = a.R.withCredentials, a.e.timeoutInterval = Math.max(0, a.R.timeoutInterval), a.e.send(a.R.url, void 0, void 0, a.R.headers))
+            a.e.vb() ? a.md = !0 : (a.hd = Date.now(), a.protocol.updateSegmentRequestInfo(a.streamIndex, a.requestInfo), a.requestInfo.timeoutInterval = Math.max(2E3 * (a.wc ? 0 : a.protocol.va(a.streamIndex).duration), 1E4), a.host.updateSegmentRequestInfo && a.host.updateSegmentRequestInfo(a.requestInfo), a.e.withCredentials = a.requestInfo.withCredentials, a.e.timeoutInterval = Math.max(0, a.requestInfo.timeoutInterval), a.e.send(a.requestInfo.url, void 0, void 0, a.requestInfo.headers))
         };
     he.prototype.vb = function() {
         return 0 < this.k || this.ec || this.e.vb() || !this.cc.Kc()
     };
     he.prototype.ke = function() {
-        return !this.kd && 2 > this.dc.na() && !this.e.vb()
+        return !this.kd && 2 > this.dc.length() && !this.e.vb()
     };
     he.prototype.le = function() {
         if (0 < this.Y || this.jd) le(this);
         else if (1 === this.k) {
             var a = this.wa.fc();
-            this.o.seek(this.h, a) ? (A(this.a, this.h + ": seek success " + a), this.k = 2, this.wa.vf(this.h), le(this)) : A(this.a, this.h + ": seek failure " + a)
-        } else this.o.cb(this.h) && le(this), this.o.eb(this.h) && (this.k = 0)
+            this.protocol.seek(this.streamIndex, a) ? (LOGI(this.a, this.streamIndex + ": seek success " + a), this.k = 2, this.wa.vf(this.streamIndex), le(this)) : LOGI(this.a, this.streamIndex + ": seek failure " + a)
+        } else this.protocol.cb(this.streamIndex) && le(this), this.protocol.eb(this.streamIndex) && (this.k = 0)
     };
     var ne = function(a) {
             this.duration = new Ad("mediaPresentationDuration");
@@ -2860,15 +2860,15 @@
     inherit(ye, we);
     var me = function(a) {
         ve.call(this, a);
-        this.n = [];
+        this.streams = [];
         for (a = a.firstElementChild; null !== a; a = a.nextElementSibling) switch (a.nodeName) {
             case "AdaptationSet":
-                this.n.push(new ye(a, this))
+                this.streams.push(new ye(a, this))
         }
     };
     inherit(me, ve);
     var ze = function(a, b, c, d, e) {
-        this.c = a;
+        this.host = a;
         this.Sb = !1;
         this.Uc = b;
         window.crypto.subtle.decrypt({
@@ -2880,13 +2880,13 @@
         this.Sb = !0
     };
     ze.prototype.Sg = function() {
-        this.Sb || K(this.c, 2)
+        this.Sb || K(this.host, 2)
     };
     ze.prototype.Tg = function(a) {
         this.Sb || this.Uc(new Uint8Array(a))
     };
     var Ae = function(a, b, c) {
-        this.c = a;
+        this.host = a;
         this.Sb = !1;
         this.Uc = b;
         window.crypto.subtle.importKey("raw", c, {
@@ -2897,7 +2897,7 @@
         this.Sb = !0
     };
     Ae.prototype.Qg = function() {
-        this.Sb || K(this.c, 2)
+        this.Sb || K(this.host, 2)
     };
     Ae.prototype.pe = function(a) {
         this.Sb || this.Uc(a)
@@ -2921,9 +2921,9 @@
     Be.prototype.parse = function(a) {
         var b = a.split("\n");
         for (a = 0; a < b.length; a++)
-            if (!Ce(this, b[a])) return z(this.a, "failed to parse HLS playlist"), this.J = null;
+            if (!Ce(this, b[a])) return LOGW(this.a, "failed to parse HLS playlist"), this.J = null;
         if (this.gf && this.hf)
-            for (a = 0; a < this.J.ic.length;) b = this.J.ic[a].codecs, 0 === b.indexOf("mp4a.") && 0 > b.indexOf(",") ? (z(this.a, "filtered out " + b + " stream"), this.J.ic.splice(a, 1)) : a++;
+            for (a = 0; a < this.J.ic.length;) b = this.J.ic[a].codecs, 0 === b.indexOf("mp4a.") && 0 > b.indexOf(",") ? (LOGW(this.a, "filtered out " + b + " stream"), this.J.ic.splice(a, 1)) : a++;
         return this.J
     };
     var De = function(a, b) {
@@ -2994,7 +2994,7 @@
                 codecs: e,
                 Wd: !0,
                 language: null
-            }, a.J.bf = !0, a.k = 4, c = !0) : (z(a.a, "no BANDWIDTH attribute"), c = !1), c;
+            }, a.J.bf = !0, a.k = 4, c = !0) : (LOGW(a.a, "no BANDWIDTH attribute"), c = !1), c;
             c = "#EXT-X-TARGETDURATION:";
             if (0 === b.indexOf(c)) return c = b.substr(c.length), 1 != a.k ? (T(a, "EXT-X-TARGETDURATION"), c = !1) : (a.J.Xd = parseInt(c, 10), c = !0), c;
             c = "#EXT-X-MEDIA-SEQUENCE:";
@@ -3038,14 +3038,14 @@
             return c
         },
         T = function(a, b) {
-            z(a.a, "unexpected " + b + ": state " + a.k)
+            LOGW(a.a, "unexpected " + b + ": state " + a.k)
         },
         Ee = function(a, b) {
             if (2 != a.k && 3 != a.k && 1 != a.k) return T(a, "EXT-X-KEY"), !1;
             a.Xa = null;
             a.qd = null;
             if (0 <= b.indexOf("METHOD=NONE")) return !0;
-            if (0 > b.indexOf("METHOD=AES-128")) return z(a.a, "unsupported KEY"), !1;
+            if (0 > b.indexOf("METHOD=AES-128")) return LOGW(a.a, "unsupported KEY"), !1;
             for (var c = b.split(","), d = 0; d < c.length; d++) {
                 b = c[d];
                 var e = 'URI="',
@@ -3074,7 +3074,7 @@
                 }
             var g = 0,
                 f = 0;
-            0 > d ? (z(this.a, "update: " + e + " not found"), 0 < c.length && (c[0].Ze = !0, g = b.aa + b.duration), c.splice(0, 0, b), d = 0, f = 1) : g = b.aa - c[d].aa;
+            0 > d ? (LOGW(this.a, "update: " + e + " not found"), 0 < c.length && (c[0].Ze = !0, g = b.aa + b.duration), c.splice(0, 0, b), d = 0, f = 1) : g = b.aa - c[d].aa;
             for (; f < c.length; f++) c[f].aa += g;
             this.Fa = d
         }
@@ -3113,7 +3113,7 @@
     };
     var He = function(a, b, c) {
         x.call(this);
-        this.c = a;
+        this.host = a;
         this.Ic = b;
         this.ga = new R(this);
         this.N = null;
@@ -3140,25 +3140,25 @@
         null !== this.N && (clearTimeout(this.N), this.N = null)
     };
     h.Xc = function() {
-        A(this.a, "update: " + this.La.url);
-        var a = new RequestInfo;
-        a.url = this.La.url;
-        this.c.updateManifestRequestInfo && this.c.updateManifestRequestInfo(a);
-        this.ga.load(a)
+        LOGI(this.a, "update: " + this.La.url);
+        var requestInfo = new RequestInfo;
+        requestInfo.url = this.La.url;
+        this.host.updateManifestRequestInfo && this.host.updateManifestRequestInfo(requestInfo);
+        this.ga.load(requestInfo);
     };
     h.Ba = function(a) {
         if (a)
             if (this.kb = (new Be(this.La.url)).parse(a)) {
                 a = 0;
                 for (var b = this.kb.g, c = 0; c < b.length; c++) b[c].aa = a, a += b[c].duration;
-                this.kb.IsLive ? (a = 1E3 * this.kb.Xd, this.N = setTimeout(this.jg, a), A(this.a, "update in: " + a)) : this.duration = a;
+                this.kb.IsLive ? (a = 1E3 * this.kb.Xd, this.N = setTimeout(this.jg, a), LOGI(this.a, "update in: " + a)) : this.duration = a;
                 this.Ic.ie(this)
-            } else this.c.onError(0);
-        else this.c.onError(3, Cd(this.ga))
+            } else this.host.onError(0);
+        else this.host.onError(3, Cd(this.ga))
     };
     var Ie = function(a, b, c, d) {
         x.call(this);
-        this.c = a;
+        this.host = a;
         this.ga = new R(this);
         this.Ra = b;
         this.Ic = c;
@@ -3175,10 +3175,10 @@
         Ie.p.t.call(this)
     };
     Ie.prototype.load = function() {
-        var a = new RequestInfo;
-        a.url = this.c.url;
-        this.c.updateManifestRequestInfo && this.c.updateManifestRequestInfo(a);
-        this.ga.load(a)
+        var requestInfo = new RequestInfo;
+        requestInfo.url = this.host.url;
+        this.host.updateManifestRequestInfo && this.host.updateManifestRequestInfo(requestInfo);
+        this.ga.load(requestInfo)
     };
     Ie.prototype.Ba = function(a) {
         if (a) {
@@ -3187,12 +3187,12 @@
                 if (a = (new Be(url)).parse(a)) {
                     if (a.bf)
                         for (url = 0; url < a.ic.length; url++) {
-                            var codecs = new He(this.c, this.Ic, a.ic[url]);
+                            var codecs = new He(this.host, this.Ic, a.ic[url]);
                             this.nb.push(codecs)
                         } else {
                             var mimetype;
                             this.bc ? (codecs = "avc1.4d40,mp4a.40.2", mimetype = "video/mp2t") : (codecs = "mp4a.40.2", mimetype = "audio/mp4");
-                            codecs = new He(this.c, this.Ic, {
+                            codecs = new He(this.host, this.Ic, {
                                 url: url,
                                 V: 0,
                                 mimeType: mimetype,
@@ -3202,10 +3202,10 @@
                             });
                             this.nb.push(codecs)
                         }
-                    for (url = 0; url < a.Yd.length; url++) codecs = new He(this.c, this.Ic, a.Yd[url]), this.Aa.push(codecs);
+                    for (url = 0; url < a.Yd.length; url++) codecs = new He(this.host, this.Ic, a.Yd[url]), this.Aa.push(codecs);
                     this.Ra.Fd()
-                } else K(this.c, 0)
-        } else K(this.c, 3, Cd(this.ga))
+                } else K(this.host, 0)
+        } else K(this.host, 3, Cd(this.ga))
     };
     var Je = function(a, b) {
             var c = b || 0,
@@ -3215,10 +3215,10 @@
                 e = a[d++] << 21 | a[d++] << 14 | a[d++] << 7 | a[d++];
             return a.subarray(c, d + e)
         },
-        Ke = function(a, b) {
+        Ke = function(a, processMetadata) {
             Fd.call(this);
             this.hc = null;
-            this.Rc = b;
+            this.processMetadata = processMetadata;
             this.Ee = Infinity;
             for (this.init(a); !(this.r >= this.f.length);) this.parse()
         };
@@ -3244,12 +3244,12 @@
         a = e;
         a < this.Ee && (this.Ee = a)
     };
-    Ke.prototype.If = function(a) {
-        this.Rc && 0 === this.f[a] && 0 === this.f[a + 1] && 1 === this.f[a + 2] && 189 === this.f[a + 3] && (a = Je(this.f, a + 9 + this.f[a + 8]), null !== a && this.Rc("ID3", a))
+    Ke.prototype.If = function(data) {
+        this.processMetadata && 0 === this.f[data] && 0 === this.f[data + 1] && 1 === this.f[data + 2] && 189 === this.f[data + 3] && (data = Je(this.f, data + 9 + this.f[data + 8]), null !== data && this.processMetadata("ID3", data))
     };
     var Le = [96E3, 88200, 64E3, 48E3, 44100, 32E3, 24E3, 22050, 16E3, 12E3, 11025, 8E3, 7350],
         Me = function(a) {
-            Log(w("cast.player.mp4.base"), a)
+            LOGE(w("cast.player.mp4.base"), a)
         },
         Ne = function(id, rate, channels) {
             if (0 > id || 32 <= id) return Me("Invalid object type id: " + id), null;
@@ -3481,25 +3481,25 @@
             }
             return d
         };
-    var W = function(a) {
-        StreamingProtocolBase.call(this, a);
+    var DashStreamingProtocol = function(host) {
+        StreamingProtocolBase.call(this, host);
         this.zb = [];
         this.ac = this.Zf.bind(this);
         this.N = null
     };
-    inherit(W, StreamingProtocolBase);
-    W.prototype.a = w("cast.player.dash.Protocol");
-    W.prototype.pb = function() {
-        W.p.pb.call(this);
+    inherit(DashStreamingProtocol, StreamingProtocolBase);
+    DashStreamingProtocol.prototype.a = w("cast.player.dash.Protocol");
+    DashStreamingProtocol.prototype.pb = function() {
+        DashStreamingProtocol.p.unload.call(this);
         null !== this.N && (clearTimeout(this.N), this.N = null)
     };
-    W.prototype.Ed = function() {
+    DashStreamingProtocol.prototype.Ed = function() {
         for (var a = [], b = 0; b < this.zb.length; b++) this.zb[b].systemId.equals(kd) ? a.push("playready") : this.zb[b].systemId.equals(ld) && a.push("widevine");
         return a
     };
-    W.prototype.updateLicenseRequestInfo = function(a) {
+    DashStreamingProtocol.prototype.updateLicenseRequestInfo = function(requestInfo) {
         var b;
-        switch (a.protectionSystem) {
+        switch (requestInfo.protectionSystem) {
             case "playready":
                 b = kd;
                 break;
@@ -3511,9 +3511,9 @@
         }
         for (var c = 0; c < this.zb.length; c++)
             if (this.zb[c].systemId.equals(b)) {
-                a.headers = {};
-                a.headers["content-type"] = "text/xml;charset=utf-8";
-                a.url = this.zb[c].url;
+                requestInfo.headers = {};
+                requestInfo.headers["content-type"] = "text/xml;charset=utf-8";
+                requestInfo.url = this.zb[c].url;
                 break
             }
     };
@@ -3556,19 +3556,19 @@
             }
         }
     };
-    h = W.prototype;
+    h = DashStreamingProtocol.prototype;
     h.ze = function(a) {
         if (a.de) {
             this.IsLive = "dynamic" === a.type.value;
             a.duration.value && (this.duration = a.duration.value);
-            a = a.de.n;
+            a = a.de.streams;
             for (var b = 0; b < a.length; b++) {
                 var c = a[b],
                     d = c.s,
                     e = d[0],
                     type = e.mimeType.value;
                 if (null === type) {
-                    Log(this.a, "no mime type");
+                    LOGE(this.a, "no mime type");
                     K(this.host, 0);
                     break
                 }
@@ -3583,7 +3583,7 @@
                     ca: g,
                     K: !0,
                     index: -1,
-                    C: -1,
+                    qualityLevel: -1,
                     s: [],
                     language: c.language.value,
                     mimeType: e.mimeType.value || "",
@@ -3617,43 +3617,43 @@
                     }, e.D = k);
                     c.s.push(f)
                 }
-                this.n.push(c)
+                this.streams.push(c)
             }
         }
     };
     h.Ba = function(a) {
         if (a) {
             var b = null !== this.N,
-                c = this.n;
-            this.n = [];
+                c = this.streams;
+            this.streams = [];
             var d = (new DOMParser).parseFromString(a, "text/xml"),
                 d = new ne(d.firstChild);
             this.ze(d);
             this.IsLive && (d = d.og.value, null !== d && (this.N = setTimeout(this.ac, 1E3 * d)));
             if (b)
                 for (a = 0; a < c.length; a++) {
-                    b = this.n[a];
+                    b = this.streams[a];
                     d = c[a];
                     b.enabled = d.enabled;
-                    b.C = d.C;
+                    b.qualityLevel = d.qualityLevel;
                     b.ca = d.ca;
                     for (var e = 0; e < b.s.length; e++) b.s[e].presentationTimeOffset = d.s[e].presentationTimeOffset;
                     e = d.index;
                     0 > e || (e = e + d.s[0].startNumber - b.s[0].startNumber, 0 > e ? (b.index = 0, b.K = !0) : (b.index = e, b.K = d.K))
-                } else W.p.Ba.call(this, a)
+                } else DashStreamingProtocol.p.Ba.call(this, a)
         } else K(this.host, 3, Cd(this.Kb))
     };
     h.qa = function(duration) {
-        var b = this.n[duration],
-            b = b.s[b.C];
+        var b = this.streams[duration],
+            b = b.s[b.qualityLevel];
         return 0 === b.g.length && b.D ? (duration = this.duration, this.IsLive && (duration -= 20), {
             start: 0,
             end: duration
-        }) : W.p.qa.call(this, duration)
+        }) : DashStreamingProtocol.p.qa.call(this, duration)
     };
     h.seek = function(a, b) {
-        var c = this.n[a],
-            d = c.s[c.C];
+        var c = this.streams[a],
+            d = c.s[c.qualityLevel];
         if (0 === d.g.length && d.D) {
             var e = this.qa(a);
             b < e.start && (b = e.start);
@@ -3664,21 +3664,21 @@
             c.index = e < d ? e : d - 1;
             return !0
         }
-        return W.p.seek.call(this, a, b)
+        return DashStreamingProtocol.p.seek.call(this, a, b)
     };
     h.cb = function(a) {
-        var b = this.n[a],
-            c = b.s[b.C];
-        return 0 === c.g.length && c.D ? (a = b.index + 1, a < Math.ceil(this.duration / c.D.duration) ? (b.index = a, !0) : !1) : W.p.cb.call(this, a)
+        var b = this.streams[a],
+            c = b.s[b.qualityLevel];
+        return 0 === c.g.length && c.D ? (a = b.index + 1, a < Math.ceil(this.duration / c.D.duration) ? (b.index = a, !0) : !1) : DashStreamingProtocol.p.cb.call(this, a)
     };
     h.eb = function(a) {
-        var b = this.n[a],
-            c = b.s[b.C];
-        return 0 === c.g.length && c.D ? b.index === Math.ceil(this.duration / c.D.duration) - 1 : W.p.eb.call(this, a)
+        var b = this.streams[a],
+            c = b.s[b.qualityLevel];
+        return 0 === c.g.length && c.D ? b.index === Math.ceil(this.duration / c.D.duration) - 1 : DashStreamingProtocol.p.eb.call(this, a)
     };
     h.va = function(a) {
-        var b = this.n[a],
-            c = b.s[b.C];
+        var b = this.streams[a],
+            c = b.s[b.qualityLevel];
         if (c.D) {
             b = b.index;
             if (0 > b) return {
@@ -3691,43 +3691,43 @@
                 duration: a
             }
         }
-        return W.p.va.call(this, a)
+        return DashStreamingProtocol.p.va.call(this, a)
     };
-    h.updateSegmentRequestInfo = function(a, b) {
-        var c = this.n[a],
-            d = c.s[c.C],
-            e = c.index;
+    h.updateSegmentRequestInfo = function(streamIndex, requestInfo) {
+        var stream = this.streams[streamIndex],
+            d = stream.s[stream.qualityLevel],
+            index = stream.index;
         if (d.D) {
             var f = d.D,
-                g = c.ca ? f.init : f.url,
+                g = stream.ca ? f.init : f.url,
                 g = g.replace("$RepresentationID$", d.id),
                 g = g.replace("$Bandwidth$", d.V);
-            c.ca || (g = g.replace("$Number$", (e + d.startNumber).toString()), g = g.replace("$Time$", 0 < d.g.length ? d.g[e].Za.toString() : e * f.duration));
-            b.url = g
+            stream.ca || (g = g.replace("$Number$", (index + d.startNumber).toString()), g = g.replace("$Time$", 0 < d.g.length ? d.g[index].Za.toString() : index * f.duration));
+            requestInfo.url = g;
         } else {
             var k = f = null;
-            if (c.ca) c = d.od, g = c.url ? c.url : d.url, c.lc && (f = c.lc.start, k = c.lc.end);
-            else if (e < d.g.length) c = d.g[e], c.url ? g = c.url : (g = d.url, f = c.offset, k = c.offset + c.size - 1);
+            if (stream.ca) stream = d.od, g = stream.url ? stream.url : d.url, stream.lc && (f = stream.lc.start, k = stream.lc.end);
+            else if (index < d.g.length) stream = d.g[index], stream.url ? g = stream.url : (g = d.url, f = stream.offset, k = stream.offset + stream.size - 1);
             else {
-                Log(this.a, "invalid segment info");
+                LOGE(this.a, "invalid segment info");
                 K(this.host, 0);
                 return
             }
-            b.url = g;
-            b.headers = {};
-            null !== f && null !== k && (b.headers.Range = "bytes=" + f + "-" + k)
+            requestInfo.url = g;
+            requestInfo.headers = {};
+            null !== f && null !== k && (requestInfo.headers.Range = "bytes=" + f + "-" + k)
         }
     };
     h.Ob = function(a, b, c) {
-        var d = this.n[a],
-            e = d.s[d.C];
+        var d = this.streams[a],
+            e = d.s[d.qualityLevel];
         if (d.ca)
-            if (d.ca = !1, d = (d = cf(b, 1836019574)) ? Te(d) : null, null === d) Log(this.a, "no init"), K(this.host, 1);
+            if (d.ca = !1, d = (d = cf(b, 1836019574)) ? Te(d) : null, null === d) LOGE(this.a, "no init"), K(this.host, 1);
             else {
                 if (!e.D && 0 === e.g.length) {
                     b = (b = cf(b, 1936286840)) ? b.$d() : null;
                     if (!b) {
-                        z(this.a, "no segments");
+                        LOGW(this.a, "no segments");
                         return
                     }
                     e.g = b
@@ -3975,99 +3975,99 @@
         },
         Ff = function(a, b, c, d, e) {
             x.call(this);
-            this.c = a;
-            this.o = b;
+            this.host = a;
+            this.protocol = b;
             this.sd = e;
             this.wb = d;
-            this.q = this.jf = this.lf = null;
+            this.mediaElement = this.jf = this.lf = null;
             this.Bc = c;
             this.e = new D;
             Cc(this.e);
-            C(this.e, "success", this.Ec, !1, this);
-            C(this.e, "error", this.yb, !1, this);
-            C(this.e, "timeout", this.yb, !1, this);
+            addEventListener(this.e, "success", this.Ec, !1, this);
+            addEventListener(this.e, "error", this.yb, !1, this);
+            addEventListener(this.e, "timeout", this.yb, !1, this);
             this.hg = this.pg.bind(this);
             this.oa = null
         };
     inherit(Ff, x);
     Ff.prototype.a = w("cast.player.core.MediaKeySession");
     Ff.prototype.t = function() {
-        this.q && (jc(this.q, "webkitkeymessage", this.ff, !1, this), jc(this.q, "webkitkeyerror", this.ef, !1, this), this.q = null);
+        this.mediaElement && (removeEventLIstener(this.mediaElement, "webkitkeymessage", this.ff, !1, this), removeEventLIstener(this.mediaElement, "webkitkeyerror", this.ef, !1, this), this.mediaElement = null);
         this.e.dispose();
         null !== this.oa && (clearTimeout(this.oa), this.oa = null);
         Ff.p.t.call(this)
     };
     var Gf = function(a) {
-        A(a.a, "create session");
-        a.q = a.c.mediaElement;
-        C(a.q, "webkitkeymessage", a.ff, !1, a);
-        C(a.q, "webkitkeyerror", a.ef, !1, a);
-        var b = a.c.licenseCustomData;
+        LOGI(a.a, "create session");
+        a.mediaElement = a.host.mediaElement;
+        addEventListener(a.mediaElement, "webkitkeymessage", a.ff, !1, a);
+        addEventListener(a.mediaElement, "webkitkeyerror", a.ef, !1, a);
+        var b = a.host.licenseCustomData;
         if (b) {
             var c = new Pe(a.wb.length + b.length + 16);
             M(c, a.wb);
             (new Df(b)).i(c);
             b = xd(c)
         } else b = a.wb;
-        a.q.webkitGenerateKeyRequest(Ef[a.Bc], b);
+        a.mediaElement.webkitGenerateKeyRequest(Ef[a.Bc], b);
         a.oa = setTimeout(a.hg, 6E4)
     };
     h = Ff.prototype;
     h.pg = function() {
-        A(this.a, "timeout");
+        LOGI(this.a, "timeout");
         Hf(this.sd, this, !0);
         this.oa = null
     };
-    h.Ec = function(a) {
-        A(this.a, "xhr success");
-        a = new Uint8Array(Mc(a.target));
-        this.c.processLicense && (a = this.c.processLicense(a));
-        this.q.webkitAddKey(Ef[this.Bc], a, this.wb, this.lf);
+    h.Ec = function(uint8Array) {
+        LOGI(this.a, "xhr success");
+        uint8Array = new Uint8Array(Mc(uint8Array.target));
+        this.host.processLicense && (uint8Array = this.host.processLicense(uint8Array));
+        this.mediaElement.webkitAddKey(Ef[this.Bc], uint8Array, this.wb, this.lf);
         Hf(this.sd, this, !0)
     };
     h.yb = function() {
-        A(this.a, "xhr error");
-        var a = new RequestStatus(String(this.e.Uri), this.e.Ma, Lc(this.e));
+        LOGI(this.a, "xhr error");
+        var a = new RequestStatus(String(this.e.Uri), this.e.errorCode, Lc(this.e));
         Hf(this.sd, this, !1);
-        K(this.c, 2, a)
+        K(this.host, 2, a)
     };
     h.ff = function(a) {
-        A(this.a, "keymessage");
+        LOGI(this.a, "keymessage");
         null !== this.oa && (clearTimeout(this.oa), this.oa = null);
-        a = a.Ib;
+        a = a.event;
         this.lf = a.sessionId;
-        this.jf = a.message;
-        this.c.prepareLicenseRequest && !this.c.prepareLicenseRequest() || this.ob()
+        this.jf = a.response;
+        this.host.prepareLicenseRequest && !this.host.prepareLicenseRequest() || this.startLicenseRequest()
     };
     h.ef = function() {
-        A(this.a, "keyerror");
+        LOGI(this.a, "keyerror");
         Hf(this.sd, this, !1);
-        K(this.c, 2)
+        K(this.host, 2)
     };
     h.ob = function() {
-        var a = new RequestInfo;
-        a.timeoutInterval = 18E4;
-        a.protectionSystem = this.Bc;
-        a.content = this.jf;
-        this.o.updateLicenseRequestInfo(a);
-        this.c.licenseUrl && (a.url = this.c.licenseUrl);
-        this.c.updateLicenseRequestInfo && this.c.updateLicenseRequestInfo(a);
-        this.e.withCredentials = a.withCredentials;
-        this.e.timeoutInterval = Math.max(0, a.timeoutInterval);
-        this.e.send(a.url, "POST", a.content, a.headers)
+        var requestInfo = new RequestInfo;
+        requestInfo.timeoutInterval = 18E4;
+        requestInfo.protectionSystem = this.Bc;
+        requestInfo.content = this.jf;
+        this.protocol.updateLicenseRequestInfo(requestInfo);
+        this.host.licenseUrl && (requestInfo.url = this.host.licenseUrl);
+        this.host.updateLicenseRequestInfo && this.host.updateLicenseRequestInfo(requestInfo);
+        this.e.withCredentials = requestInfo.withCredentials;
+        this.e.timeoutInterval = Math.max(0, requestInfo.timeoutInterval);
+        this.e.send(requestInfo.url, "POST", requestInfo.content, requestInfo.headers)
     };
     var If = function(a, b, c) {
         x.call(this);
-        this.c = a;
-        this.o = b;
+        this.host = a;
+        this.protocol = b;
         this.Bc = c;
         this.Da = new Nc;
-        C(this.c.mediaElement, "webkitneedkey", this.zf, !1, this)
+        addEventListener(this.host.mediaElement, "webkitneedkey", this.zf, !1, this)
     };
     inherit(If, x);
     If.prototype.a = w("cast.player.core.MediaKeysManager");
     If.prototype.t = function() {
-        jc(this.c.mediaElement, "webkitneedkey", this.zf, !1, this);
+        removeEventLIstener(this.host.mediaElement, "webkitneedkey", this.zf, !1, this);
         this.reset();
         If.p.t.call(this)
     };
@@ -4078,37 +4078,37 @@
     var Hf = function(a, b, c) {
         Pc(a.Da);
         b.dispose();
-        A(a.a, "key session ended: " + a.Da.na());
-        c && !a.Da.pa() && (b = Qc(a.Da), Gf(b))
+        LOGI(a.a, "key session ended: " + a.Da.length());
+        c && !a.Da.isEmpty() && (b = Qc(a.Da), Gf(b))
     };
     If.prototype.zf = function(a) {
-        (a = a.Ib.initData) ? (a = new Ff(this.c, this.o, this.Bc, a, this), this.Da.S.push(a), A(this.a, "needkey: " + this.Da.na()), 1 === this.Da.na() && Gf(a)) : A(this.a, "invalid init data")
+        (a = a.event.initData) ? (a = new Ff(this.host, this.protocol, this.Bc, a, this), this.Da.S.push(a), LOGI(this.a, "needkey: " + this.Da.length()), 1 === this.Da.length() && Gf(a)) : LOGI(this.a, "invalid init data")
     };
     If.prototype.ob = function() {
-        Qc(this.Da).ob()
+        Qc(this.Da).startLicenseRequest()
     };
-    var Jf = function(a, b, c) {
+    var Jf = function(host, protocol, c) {
         x.call(this);
-        this.c = a;
-        this.o = b;
+        this.host = host;
+        this.protocol = protocol;
         this.wa = c;
         this.L = [];
         this.pc = null;
         this.mediasource = new MediaSource;
         this.Bf = !1;
-        C(this.mediasource, "sourceopen", this.xf, !1, this)
+        addEventListener(this.mediasource, "sourceopen", this.xf, !1, this)
     };
     inherit(Jf, x);
     h = Jf.prototype;
     h.a = w("cast.player.core.MediaSourceManager");
     h.t = function() {
         Kf(this);
-        this.o.pb();
-        jc(this.mediasource, "sourceopen", this.xf, !1, this);
+        this.protocol.unload();
+        removeEventLIstener(this.mediasource, "sourceopen", this.xf, !1, this);
         Jf.p.t.call(this)
     };
     h.xf = function() {
-        this.Bf ? this.update() : (this.o.load(this), this.Bf = !0)
+        this.Bf ? this.update() : (this.protocol.load(this), this.Bf = !0)
     };
     h.Fd = function() {
         this.update()
@@ -4118,7 +4118,7 @@
     };
     h.load = function() {
         Kf(this);
-        this.c.mediaElement.src = window.URL.createObjectURL(this.mediasource)
+        this.host.mediaElement.src = window.URL.createObjectURL(this.mediasource)
     };
     var Kf = function(a) {
         for (var b = 0; b < a.L.length; b++) a.L[b] && (a.L[b].dispose(), a.L[b] = null);
@@ -4130,24 +4130,24 @@
         for (var a = 0; a < this.L.length; a++) this.L[a] && this.L[a].reset()
     };
     h.update = function() {
-        for (var a = this.o.getStreamCount(), b = null, c = null, d = 0; d < a; d++)
-            if (this.o.isStreamEnabled(d)) {
-                var mimeType = this.o.getStreamInfo(d).mimeType;
-                la(mimeType, "audio/") ? b ? z(this.a, "more than one audio stream enabled") : b = mimeType : la(mimeType, "video/") && (c ? z(this.a, "more than one video stream enabled") : c = mimeType);
-                this.L[d] || (this.L[d] = new he(this.wa, this.c, this.o, d, this.mediasource), this.L[d].oe())
+        for (var a = this.protocol.getStreamCount(), b = null, c = null, d = 0; d < a; d++)
+            if (this.protocol.isStreamEnabled(d)) {
+                var mimeType = this.protocol.getStreamInfo(d).mimeType;
+                la(mimeType, "audio/") ? b ? LOGW(this.a, "more than one audio stream enabled") : b = mimeType : la(mimeType, "video/") && (c ? LOGW(this.a, "more than one video stream enabled") : c = mimeType);
+                this.L[d] || (this.L[d] = new he(this.wa, this.host, this.protocol, d, this.mediasource), this.L[d].oe())
             } else this.L[d] && (this.L[d].dispose(), this.L[d] = null);
         if (mimeType = c ? c : b) {
-            if (!this.pc && (a = mimeType, b = this.o.Ed())) {
+            if (!this.pc && (a = mimeType, b = this.protocol.Ed())) {
                 c = null;
                 for (d = 0; d < b.length; d++)
                     if ((mimeType = Ef[b[d]]) &&
-                        this.c.mediaElement.canPlayType(a, mimeType)) {
+                        this.host.mediaElement.canPlayType(a, mimeType)) {
                         c = b[d];
                         break
                     }
-                c ? this.pc = new If(this.c, this.o, c) : z(this.a, "no supported key type")
+                c ? this.pc = new If(this.host, this.protocol, c) : LOGW(this.a, "no supported key type")
             }
-        } else z(this.a, "no enabled audio or video stream")
+        } else LOGW(this.a, "no enabled audio or video stream")
     };
     h.ke = function(a) {
         return this.L[a].ke()
@@ -4159,7 +4159,7 @@
         return this.L[a].vb()
     };
     h.ya = function(a, b) {
-        return this.L[a].ya(b)
+        return this.L[a].getBufferDuration(b)
     };
     h.ob = function() {
         this.pc.ob()
@@ -4390,11 +4390,11 @@
         qd.call(this, a)
     };
     inherit(fg, qd);
-    var gg = function(a, b, c, d) {
+    var gg = function(a, b, c, processMetadata) {
         this.ig = a.match("mp4a.67") ? 103 : 64;
         this.df = b;
         this.hc = c;
-        this.Rc = d;
+        this.processMetadata = processMetadata;
         this.ae = null;
         this.be = 0;
         this.Ac = null
@@ -4402,14 +4402,14 @@
     gg.prototype.a = w("cast.player.hls.AacParser");
     var hg = function(a) {
         for (var b = new fg(a.df), c = [], d = null; b.offset < b.buffer.length;) {
-            var e;
-            if (e = Je(b.buffer, b.offset)) b.offset += e.length;
-            if (e) a.Rc && a.Rc("ID3", e);
+            var data;
+            if (data = Je(b.buffer, b.offset)) b.offset += data.length;
+            if (data) a.processMetadata && a.processMetadata("ID3", data);
             else {
                 d = b.buffer.subarray(b.offset);
                 if (255 != d[0] || 240 != (d[1] & 240)) d = null;
                 else {
-                    e = ((d[3] & 3) << 11) + (d[4] << 3) + ((d[5] & 224) >> 5);
+                    data = ((d[3] & 3) << 11) + (d[4] << 3) + ((d[5] & 224) >> 5);
                     var f = d[2] >> 2 & 15,
                         g = d[1] & 1 ? 7 : 9;
                     b.offset += g;
@@ -4417,16 +4417,16 @@
                         profile: (d[2] >> 6 & 3) + 1,
                         $a: Le[f],
                         zg: (d[2] << 2 & 4) + (d[3] >> 6 & 3),
-                        Ag: e - g
+                        Ag: data - g
                     }
                 }
                 if (d) c.push(ud(b, d.Ag));
-                else return Log(a.a, "Neither ID3 nor ADTS header was found at " + b.buffer.subarray(b.offset).byteOffset), !1
+                else return LOGE(a.a, "Neither ID3 nor ADTS header was found at " + b.buffer.subarray(b.offset).byteOffset), !1
             }
         }
-        if (null === d) return Log(a.a, "No ADTS header was found."), !1;
+        if (null === d) return LOGE(a.a, "No ADTS header was found."), !1;
         b = Ne(d.profile, d.$a, d.zg);
-        if (null === b) return Log(a.a, "Cannot generate audio codec private data."), !1;
+        if (null === b) return LOGE(a.a, "Cannot generate audio codec private data."), !1;
         a.ae = c;
         a.be = d.$a;
         a.Ac = b;
@@ -4437,7 +4437,7 @@
     };
     var ig = function(a, b, c) {
         x.call(this);
-        this.c = a;
+        this.host = a;
         this.bc = c;
         this.af = b;
         this.X = null;
@@ -4451,10 +4451,10 @@
         this.fa = null;
         this.e = new D;
         Cc(this.e);
-        C(this.e, "success", this.mg, !1, this);
-        C(this.e, "error", this.of, !1, this);
-        C(this.e, "timeout", this.of, !1, this);
-        this.R = new RequestInfo;
+        addEventListener(this.e, "success", this.mg, !1, this);
+        addEventListener(this.e, "error", this.of, !1, this);
+        addEventListener(this.e, "timeout", this.of, !1, this);
+        this.requestInfo = new RequestInfo;
         this.Fc = this.Xa = this.xc = this.Lc = null;
         this.gc = !0;
         this.ba = this.Ya = this.M = null
@@ -4481,23 +4481,23 @@
         this.ba = setTimeout(this.mf, 0)
     };
     h.mg = function(a) {
-        this.Lc = new Ae(this.c, this.kg, new Uint8Array(Mc(a.target)))
+        this.Lc = new Ae(this.host, this.kg, new Uint8Array(Mc(a.target)))
     };
     h.of = function() {
-        K(this.c, 3, new RequestStatus(this.R.url, this.e.Ma, Lc(this.e)))
+        K(this.host, 3, new RequestStatus(this.requestInfo.url, this.e.errorCode, Lc(this.e)))
     };
     h.lg = function() {
         var a = Qc(this.Ja);
-        a.Zd && this.Fc && this.fa && (A(this.a, "decrypt segment"), this.xc = new ze(this.c, this.gg, this.Fc, a.Zd, this.fa), this.ba = this.fa = null)
+        a.Zd && this.Fc && this.fa && (LOGI(this.a, "decrypt segment"), this.xc = new ze(this.host, this.gg, this.Fc, a.Zd, this.fa), this.ba = this.fa = null)
     };
     h.yc = function(a) {
-        A(this.a, "process segment");
+        LOGI(this.a, "process segment");
         this.xc = null;
         var b = Pc(this.Ja),
             c;
-        if (this.bc) c = new Ke(a, this.c.processMetadata);
+        if (this.bc) c = new Ke(a, this.host.processMetadata);
         else {
-            c = new gg(this.X.La.codecs, a, b.aa, this.c.processMetadata);
+            c = new gg(this.X.La.codecs, a, b.aa, this.host.processMetadata);
             a = c;
             if (hg(a)) {
                 var d = new Pe(2 * a.df.length);
@@ -4508,7 +4508,7 @@
                 df(a)
             } else a = null;
             if (!a) {
-                K(this.c, 1);
+                K(this.host, 1);
                 return
             }
         }
@@ -4518,7 +4518,7 @@
             duration: b.duration
         };
         d = c.kf();
-        if (c = null === this.M && Infinity !== d) A(this.a, "start: " +
+        if (c = null === this.M && Infinity !== d) LOGI(this.a, "start: " +
             d), this.M = d, this.Ya = b, this.af && (d = this.af, d.H && d.H.K(this.M, b));
         d = this.Vd;
         this.Vd = null;
@@ -4527,15 +4527,15 @@
     h.Ob = function(a, b) {
         this.Vd = b;
         var c = Qc(this.Ja).$e;
-        c ? (this.fa = a, this.Xa === c && null !== this.Fc ? this.ba = setTimeout(this.mf, 0) : (this.Xa = c, this.Fc = null, this.R.url = this.Xa, this.c.updateLicenseRequestInfo && this.c.updateLicenseRequestInfo(this.R), this.e.withCredentials = this.R.withCredentials, this.e.timeoutInterval = Math.max(0, this.R.timeoutInterval), this.e.send(this.R.url, void 0, void 0, this.R.headers))) : this.yc(a)
+        c ? (this.fa = a, this.Xa === c && null !== this.Fc ? this.ba = setTimeout(this.mf, 0) : (this.Xa = c, this.Fc = null, this.requestInfo.url = this.Xa, this.host.updateLicenseRequestInfo && this.host.updateLicenseRequestInfo(this.requestInfo), this.e.withCredentials = this.requestInfo.withCredentials, this.e.timeoutInterval = Math.max(0, this.requestInfo.timeoutInterval), this.e.send(this.requestInfo.url, void 0, void 0, this.requestInfo.headers))) : this.yc(a)
     };
     h.updateSegmentRequestInfo = function(a) {
         var b = Ge(this.ab);
         if (b) {
             this.gc && (b.K = !0, this.gc = !1);
-            if (!this.Ja.pa()) {
-                var c = this.Ja.ha()[this.Ja.na() - 1];
-                c.jc === b.jc && (this.Ja.remove(c), A(this.a, "removed segment " + b.jc))
+            if (!this.Ja.isEmpty()) {
+                var c = this.Ja.ha()[this.Ja.length() - 1];
+                c.jc === b.jc && (this.Ja.remove(c), LOGI(this.a, "removed segment " + b.jc))
             }
             this.Ja.S.push(b);
             if (c = b.cf) a.headers = {}, a.headers.Range = "bytes=" + c.start + "-" + c.end;
@@ -4571,7 +4571,7 @@
         this.nf = a;
         this.td = b;
         this.gc = !0;
-        this.X && this.X.pb();
+        this.X && this.X.unload();
         this.X = c;
         c.load()
     };
@@ -4604,25 +4604,25 @@
         else if (this.gc || c.K) d = this.Ya, e = !0;
         je(b, a, d, this.M || 0, e)
     };
-    var Z = function(a, b) {
-        this.c = a;
-        this.bc = 1 !== b;
+    var HlsStreamingProtocol = function(host, opt_format) {
+        this.host = host;
+        this.bc = 1 !== opt_format;
         this.$ = this.Ra = null;
-        this.Mb = new ig(a, this, this.bc);
+        this.Mb = new ig(host, this, this.bc);
         this.H = this.W = null
     };
-    Z.prototype.load = function(a) {
+    HlsStreamingProtocol.prototype.load = function(a) {
         this.Ra = a;
-        this.$ = new Ie(this.c, this, this, this.bc);
+        this.$ = new Ie(this.host, this, this, this.bc);
         this.$.load()
     };
-    Z.prototype.pb = function() {
+    HlsStreamingProtocol.prototype.pb = function() {
         this.Mb.dispose();
         this.W && (this.W.dispose(), this.W = null);
         this.H && (this.H.dispose(), this.H = null);
         this.$ && (this.$.dispose(), this.$ = null)
     };
-    Z.prototype.Fd = function() {
+    HlsStreamingProtocol.prototype.Fd = function() {
         for (var a = this.$.Aa, b = 0; b < a.length; b++) {
             var c = a[b].La;
             if (c.Wd && la(c.mimeType, "audio/")) {
@@ -4633,53 +4633,53 @@
         this.Ra.Fd();
         this.Ra = null
     };
-    Z.prototype.getStreamCount = function() {
+    HlsStreamingProtocol.prototype.getStreamCount = function() {
         return this.$.Aa.length + 1
     };
-    r("cast.player.hls.Protocol.prototype.getStreamCount", Z.prototype.getStreamCount);
-    Z.prototype.enableStream = function(a, b) {
+    r("cast.player.hls.Protocol.prototype.getStreamCount", HlsStreamingProtocol.prototype.getStreamCount);
+    HlsStreamingProtocol.prototype.enableStream = function(a, b) {
         if (0 < a) {
             var c = this.$.Aa[a - 1],
                 d = c.La.mimeType;
-            la(d, "audio/") ? (this.W && (this.W.dispose(), this.W = null), b && (this.W = new ig(this.c, null, !1), this.W.X = c)) : la(d, "text/") && (this.H && (this.H.dispose(), this.H = null), b && (this.H = new jg(this.c), this.H.X = c, this.H.K(this.Mb.M, this.Mb.Ya)))
+            la(d, "audio/") ? (this.W && (this.W.dispose(), this.W = null), b && (this.W = new ig(this.host, null, !1), this.W.X = c)) : la(d, "text/") && (this.H && (this.H.dispose(), this.H = null), b && (this.H = new jg(this.host), this.H.X = c, this.H.K(this.Mb.M, this.Mb.Ya)))
         }
     };
-    r("cast.player.hls.Protocol.prototype.enableStream", Z.prototype.enableStream);
-    Z.prototype.isStreamEnabled = function(a) {
+    r("cast.player.hls.Protocol.prototype.enableStream", HlsStreamingProtocol.prototype.enableStream);
+    HlsStreamingProtocol.prototype.isStreamEnabled = function(a) {
         return null !== kg(this, a)
     };
-    r("cast.player.hls.Protocol.prototype.isStreamEnabled", Z.prototype.isStreamEnabled);
+    r("cast.player.hls.Protocol.prototype.isStreamEnabled", HlsStreamingProtocol.prototype.isStreamEnabled);
     var kg = function(a, b) {
         var c;
         0 === b ? c = a.Mb : (c = a.$.Aa[b - 1], c = null !== a.W && a.W.X === c ? a.W : null !== a.H && a.H.X === c ? a.H : null);
         return c
     };
-    Z.prototype.getQualityLevel = function(a) {
+    HlsStreamingProtocol.prototype.getQualityLevel = function(a) {
         return kg(this, a).getQualityLevel()
     };
-    r("cast.player.hls.Protocol.prototype.getQualityLevel", Z.prototype.getQualityLevel);
-    Z.prototype.getStreamInfo = function(a) {
-        var b = [],
-            c, d;
+    r("cast.player.hls.Protocol.prototype.getQualityLevel", HlsStreamingProtocol.prototype.getQualityLevel);
+    HlsStreamingProtocol.prototype.getStreamInfo = function(a) {
+        var bitrates = [],
+            c, codecs;
         if (0 === a) {
-            b = [];
+            bitrates = [];
             c = this.$.nb;
-            for (a = 0; a < c.length; a++) b.push(c[a].La.V);
+            for (a = 0; a < c.length; a++) bitrates.push(c[a].La.V);
             c = this.$.nb[0].La;
-            d = c.codecs;
+            codecs = c.codecs;
             if (this.W) {
                 var e = c.codecs.split(",");
                 for (a = 0; a < e.length; a++)
                     if (0 === e[a].indexOf("avc1.")) {
-                        d = e[a];
+                        codecs = e[a];
                         break
                     }
             }
-        } else c = this.$.Aa[a - 1].La, b.push(c.V), d = c.codecs;
-        return new StreamInfo(d, c.mimeType, b, c.language)
+        } else c = this.$.Aa[a - 1].La, bitrates.push(c.V), codecs = c.codecs;
+        return new StreamInfo(codecs, c.mimeType, bitrates, c.language)
     };
-    r("cast.player.hls.Protocol.prototype.getStreamInfo", Z.prototype.getStreamInfo);
-    h = Z.prototype;
+    r("cast.player.hls.Protocol.prototype.getStreamInfo", HlsStreamingProtocol.prototype.getStreamInfo);
+    h = HlsStreamingProtocol.prototype;
     h.Md = function(a, b, c) {
         kg(this, a).Md(b, c, 0 === a ? this.$.nb[b] : this.$.Aa[a - 1])
     };
@@ -4693,7 +4693,7 @@
         (this.Mb.X === a ? this.Mb : null !== this.W && this.W.X === a ? this.W : null !== this.H && this.H.X === a ? this.H : null).ie()
     };
     h.updateLicenseRequestInfo = function() {};
-    h.Xf = function() {
+    h.getDuration = function() {
         var a = this.Mb.X;
         return a ? a.duration : -1
     };
@@ -4898,13 +4898,13 @@
             this.lb = null;
             this.systemId.value && (this.lb = Dd(this.systemId.value, a.textContent))
         };
-    var wg = function(a) {
-        StreamingProtocolBase.call(this, a);
+    var SmoothStreamingProtocol = function(host) {
+        StreamingProtocolBase.call(this, host);
         this.yd = null;
         this.Na = 1E7
     };
-    inherit(wg, StreamingProtocolBase);
-    wg.prototype.a = w("cast.player.smooth.Protocol");
+    inherit(SmoothStreamingProtocol, StreamingProtocolBase);
+    SmoothStreamingProtocol.prototype.a = w("cast.player.smooth.Protocol");
     var xg = function(type, mimeType, codecs, language, e) {
             return {
                 type: type,
@@ -4916,7 +4916,7 @@
                 ca: void 0 === e ? !0 : !1,
                 codecs: codecs,
                 index: -1,
-                C: -1
+                qualityLevel: -1
             }
         },
         yg = function(a, b, c, d, e, data) {
@@ -4933,7 +4933,7 @@
                 }
             }
         };
-    wg.prototype.ze = function(a) {
+    SmoothStreamingProtocol.prototype.ze = function(a) {
         var b = a.Oa;
         if (b) {
             b = b.lb;
@@ -4984,7 +4984,7 @@
                         f.s.push(yg(d.name.value, d.url.value,
                             e.V.value, g, d.g, xd(Cf)))
                     }
-                    this.n.push(f)
+                    this.streams.push(f)
                 }
             } else if (1 === d.Qa) t: {
                 g = b;
@@ -5007,52 +5007,52 @@
                     (new dg(l, q, 64, p, u)).i(ib);
                     e.s.push(yg(d.name.value, d.url.value, k.V.value, g, d.g, xd(ib)))
                 }
-                this.n.push(e)
+                this.streams.push(e)
             } else if (3 ===
                 d.Qa) {
                 g = b;
                 e = xg(3, "text/mp4", e, d.language.value, !1);
                 for (f = 0; f < d.sa.length; f++) e.s.push(yg(d.name.value, d.url.value, d.sa[f].V.value || 0, g, d.g, null));
-                this.n.push(e)
+                this.streams.push(e)
             }
         }
     };
     var zg = function(a, b) {
-        Log(a.a, b);
+        LOGE(a.a, b);
         K(a.host, 0)
     };
-    h = wg.prototype;
+    h = SmoothStreamingProtocol.prototype;
     h.Ba = function(a) {
         if (a) {
             var b = (new DOMParser).parseFromString(a, "text/xml"),
                 b = new ng(b.firstChild);
             this.ze(b);
-            wg.p.Ba.call(this, a)
+            SmoothStreamingProtocol.p.Ba.call(this, a)
         } else K(this.host, 3, Cd(this.Kb))
     };
     h.Ed = function() {
         return ["playready"]
     };
-    h.updateLicenseRequestInfo = function(a) {
-        a.headers = {};
-        a.headers["content-type"] = "text/xml;charset=utf-8";
-        a.url = this.yd.url
+    h.updateLicenseRequestInfo = function(requestInfo) {
+        requestInfo.headers = {};
+        requestInfo.headers["content-type"] = "text/xml;charset=utf-8";
+        requestInfo.url = this.yd.url;
     };
     h.Ie = function(a) {
-        a = this.n[a];
-        return a.s[a.C].od.data
+        a = this.streams[a];
+        return a.s[a.qualityLevel].od.data;
     };
-    h.updateSegmentRequestInfo = function(a, b) {
-        var c = this.n[a],
-            d = c.index,
-            c = c.s[c.C],
+    h.updateSegmentRequestInfo = function(index, requestInfo) {
+        var c = this.streams[index],
+            index = c.index,
+            c = c.s[c.qualityLevel],
             e = c.url,
             e = e.replace("{bitrate}", c.V.toString()),
-            e = e.replace("{start time}", c.g[d].Za.toString());
-        b.url = this.uri.resolve(new E(e)).toString().toString()
+            e = e.replace("{start time}", c.g[index].Za.toString());
+        requestInfo.url = this.uri.resolve(new E(e)).toString().toString()
     };
     h.Ob = function(a, b, c) {
-        var d = this.n[a],
+        var d = this.streams[a],
             e = this.va(a);
         if (d.ca) d.ca = !1, je(c, b, {
             time: e.time,
@@ -5060,20 +5060,20 @@
         }, 0, !1);
         else {
             if (this.IsLive) {
-                a = this.n[a];
-                var f = a.s[a.C].g;
+                a = this.streams[a];
+                var f = a.s[a.qualityLevel].g;
                 if (!(a.index + 1 < f.length)) {
                     var g;
                     g = this.Na;
                     var k = cf(b, 1970628964, Ve, !0);
                     g = k ? k.$d(g) : null;
-                    if (null === g) z(this.a, "no new segments");
+                    if (null === g) LOGW(this.a, "no new segments");
                     else
                         for (1E4 < f.length && a.index >= g.length && (f.splice(0, g.length), a.index -= g.length), f = f.concat(g), g = 0; g < a.s.length; g++) a.s[g].g = f
                 }
             }
             f = d.index;
-            a = d.s[d.C];
+            a = d.s[d.qualityLevel];
             g = a.g;
             if (3 === d.type) b = (b = cf(b, 1835295092)) ? U(b) : null;
             else {
@@ -5103,17 +5103,17 @@
                 df(f, b);
                 b = f
             }
-            null === b ? (Log(this.a, "no media data"), K(this.host, 1)) : (je(c, b, e, e.time + a.presentationTimeOffset, d.K), d.K = !1)
+            null === b ? (LOGE(this.a, "no media data"), K(this.host, 1)) : (je(c, b, e, e.time + a.presentationTimeOffset, d.K), d.K = !1)
         }
     };
-    r("cast.player.api.CreateDashStreamingProtocol", function(a) {
-        return new W(a)
+    r("cast.player.api.CreateDashStreamingProtocol", function(host) {
+        return new DashStreamingProtocol(host);
     });
-    r("cast.player.api.CreateHlsStreamingProtocol", function(a, b) {
-        return new Z(a, b)
+    r("cast.player.api.CreateHlsStreamingProtocol", function(host, opt_format) {
+        return new HlsStreamingProtocol(host, opt_format);
     });
-    r("cast.player.api.CreateSmoothStreamingProtocol", function(a) {
-        return new wg(a)
+    r("cast.player.api.CreateSmoothStreamingProtocol", function(host) {
+        return new SmoothStreamingProtocol(host);
     });
     var Bg = function(a) {
             this.Pf = a;
@@ -5599,8 +5599,8 @@
         }
         a.Ga = 0
     };
-    var ah = function(a, b) {
-        ce.call(this, a, b, "webvtt");
+    var ah = function(a, mediaElement) {
+        ce.call(this, a, mediaElement, "webvtt");
         this.a = w("cast.player.ts608.InbandCaptionsManager");
         this.I = new Bg(this);
         this.I.nd = 1;
@@ -5618,7 +5618,7 @@
         ah.p.t.call(this)
     };
     ah.prototype.ce = function() {
-        if (this.Eb.pa()) {
+        if (this.Eb.isEmpty()) {
             var a = Pc(this.fa);
             this.M !== a.presentationTimeOffset && (this.I.clear(), this.nc = null);
             this.M = a.presentationTimeOffset;
@@ -5634,7 +5634,7 @@
             }
             this.Eb.init(null)
         }
-        this.fa.pa() && this.Eb.pa() ? this.ba = null : this.ba = setTimeout(this.ac, 20)
+        this.fa.isEmpty() && this.Eb.isEmpty() ? this.ba = null : this.ba = setTimeout(this.ac, 20)
     };
     var Gg = function(a, b, c, d) {
         null !== a.nc && b < a.nc && (b = a.nc);.1 > c - b && (c = b + .1);
@@ -5646,10 +5646,10 @@
         })
     };
     ah.prototype.Id = function(a, b) {
-        1 < this.fa.na() ? z(this.a, "Dropped segment") : (this.fa.S.push({
+        1 < this.fa.length() ? LOGW(this.a, "Dropped segment") : (this.fa.S.push({
             data: a,
             B: b
-        }), A(this.a, "Pending " + this.fa.na()), null === this.ba && (this.ba = setTimeout(this.ac, 20)))
+        }), LOGI(this.a, "Pending " + this.fa.length()), null === this.ba && (this.ba = setTimeout(this.ac, 20)))
     };
     ah.prototype.reset = function() {
         ah.p.reset.call(this);
@@ -5662,13 +5662,13 @@
         null !== this.ba && (clearTimeout(this.ba), this.ba = null)
     };
     var Player = function(a) {
-        A(this.a, "Version: 1.0.0.2");
-        this.c = a;
-        this.o = null;
-        this.Pa = 0;
-        this.Bb = this.me = this.Gb = !1;
+        LOGI(this.a, "Version: 1.0.0.2");
+        this.host = a;
+        this.protocol = null;
+        this.opt_initialTime = 0;
+        this.autoplay = this.me = this.Gb = !1;
         this.rd = !0;
-        this.mb = this.T = this.q = null;
+        this.mb = this.T = this.mediaElement = null;
         this.ne = !1;
         this.Jc = null;
         this.ac = this.ce.bind(this)
@@ -5684,67 +5684,67 @@
         this.me && this.mb.Id(a, b)
     };
     h.vf = function(a) {
-        this.Gb && (a = this.o.va(a).time, Infinity === this.Pa || this.Pa < a) && (this.Pa = a)
+        this.Gb && (a = this.protocol.va(a).time, Infinity === this.opt_initialTime || this.opt_initialTime < a) && (this.opt_initialTime = a)
     };
     h.Ef = function() {
         var a = this.T,
-            b = a.o.Xf();
+            b = a.protocol.getDuration();
         0 < b && !a.mediasource.duration && (a.mediasource.duration = parseFloat((b - 1E-4).toFixed(4)))
     };
     h.fc = function() {
-        return this.Gb ? this.Pa : this.q.currentTime
+        return this.Gb ? this.opt_initialTime : this.mediaElement.currentTime
     };
-    var bh = function(a) {
-        null !== a.Jc && (clearTimeout(a.Jc), a.Jc = null)
+    var bh = function(player) {
+        null !== player.Jc && (clearTimeout(player.Jc), player.Jc = null)
     };
     h = Player.prototype;
     h.sf = function() {
-        A(this.a, "seeking");
+        LOGI(this.a, "seeking");
         this.ne ? this.ne = !1 : (this.mb && this.mb.reset(), this.T.reset())
     };
     h.qf = function() {
-        Log(this.a, "error");
-        K(this.c, 1)
+        LOGE(this.a, "error");
+        K(this.host, 1)
     };
     h.rf = function() {
-        A(this.a, "loadedmetadata");
-        this.Gb && 0 !== this.Pa && (this.ne = !0, this.q.currentTime !== this.Pa && (this.q.currentTime = this.Pa));
+        LOGI(this.a, "loadedmetadata");
+        this.Gb && 0 !== this.opt_initialTime && (this.ne = !0, this.mediaElement.currentTime !== this.opt_initialTime && (this.mediaElement.currentTime = this.opt_initialTime));
         this.Gb = !1
     };
     h.Xc = function() {
         this.rd = !1;
         for (var a = 0, b = 0, c = !0, time = this.fc(), e = this.T.getStreamCount(), f = 0; f < e; f++)
-            if (this.o.isStreamEnabled(f) && (b++, this.T.vb(f))) {
+            if (this.protocol.isStreamEnabled(f) && (b++, this.T.vb(f))) {
                 a++;
-                var buffer = this.T.ya(f, time);
-                B(this.a, f + ": time=" + time + " buffer=" + buffer);
-                buffer < this.c.autoResumeDuration && (c = !1);
+                var buffer = this.T.getBufferDuration(f, time);
+                LOGF(this.a, f + ": time=" + time + " buffer=" + buffer);
+                buffer < this.host.autoResumeDuration && (c = !1);
                 var k = f;
-                20 <= buffer || (buffer < this.c.autoPauseDuration && (buffer = this.o.getStreamInfo(k), la(buffer.mimeType, "text/") || (this.rd = !0)), this.T.ke(k) && this.T.le(k));
-                if (!this.q) return
+                20 <= buffer || (buffer < this.host.autoPauseDuration && (buffer = this.protocol.getStreamInfo(k), la(buffer.mimeType, "text/") || (this.rd = !0)), this.T.ke(k) && this.T.le(k));
+                if (!this.mediaElement) return
             }
-        0 !== b && (this.rd ? !this.q.paused && this.q.duration - time > this.c.autoPauseDuration && (A(this.a, "auto pause " +
-            time), this.Bb = !0, this.q.pause()) : this.Bb && c && (this.Bb = !1, this.q.paused && (A(this.a, "auto resume " + time), this.q.play())), 0 === a ? (A(this.a, "endOfStream " + time), this.T.endOfStream()) : this.Jc = setTimeout(this.ac, 400))
+        0 !== b && (this.rd ? !this.mediaElement.paused && this.mediaElement.duration - time > this.host.autoPauseDuration && (LOGI(this.a, "auto pause " +
+            time), this.autoplay = !0, this.mediaElement.pause()) : this.autoplay && c && (this.autoplay = !1, this.mediaElement.paused && (LOGI(this.a, "auto resume " + time), this.mediaElement.play())), 0 === a ? (LOGI(this.a, "endOfStream " + time), this.T.endOfStream()) : this.Jc = setTimeout(this.ac, 400))
     };
     h.ce = function() {
         this.Jc = null;
         this.Xc()
     };
-    h.load = function(a, b) {
-        A(this.a, "load ");
-        (this.o = a) ? (this.q = this.c.mediaElement, C(this.q, "error", this.qf, !1, this), C(this.q, "seeking", this.sf, !1, this), C(this.q, "loadedmetadata", this.rf, !1, this), this.Bb = this.q.autoplay, this.Pa = b || 0, this.Gb = !0, this.T = new Jf(this.c, this.o, this), this.T.load()) : Log(this.a, "no protocol")
+    h.load = function(protocol, opt_initialTime) {
+        LOGI(this.a, "load ");
+        (this.protocol = protocol) ? (this.mediaElement = this.host.mediaElement, addEventListener(this.mediaElement, "error", this.qf, !1, this), addEventListener(this.mediaElement, "seeking", this.sf, !1, this), addEventListener(this.mediaElement, "loadedmetadata", this.rf, !1, this), this.autoplay = this.mediaElement.autoplay, this.opt_initialTime = opt_initialTime || 0, this.Gb = !0, this.T = new Jf(this.host, this.protocol, this), this.T.load()) : LOGE(this.a, "no protocol")
     };
     Player.prototype.load = Player.prototype.load;
-    Player.prototype.pb = function() {
-        A(this.a, "unload ");
+    Player.prototype.unload = function() {
+        LOGI(this.a, "unload ");
         ch(this);
-        this.q && (this.T.dispose(), bh(this), this.Bb = !1, jc(this.q, "error", this.qf, !1, this), jc(this.q, "seeking", this.sf, !1, this), jc(this.q, "loadedmetadata", this.rf, !1, this), this.q = null)
+        this.mediaElement && (this.T.dispose(), bh(this), this.autoplay = !1, removeEventLIstener(this.mediaElement, "error", this.qf, !1, this), removeEventLIstener(this.mediaElement, "seeking", this.sf, !1, this), removeEventLIstener(this.mediaElement, "loadedmetadata", this.rf, !1, this), this.mediaElement = null)
     };
-    Player.prototype.unload = Player.prototype.pb;
+    Player.prototype.unload = Player.prototype.unload;
     Player.prototype.reload = function() {
-        this.Gb || (this.Pa = this.q.currentTime);
+        this.Gb || (this.opt_initialTime = this.mediaElement.currentTime);
         this.Gb = !0;
-        this.q.paused || (this.Bb = !0);
+        this.mediaElement.paused || (this.autoplay = !0);
         bh(this);
         this.T.load()
     };
@@ -5753,13 +5753,13 @@
         UNDERFLOW: 1,
         SEEKABLE: 2
     };
-    Player.prototype.getState = function(a) {
+    Player.prototype.getState = function(opt_stateMask) {
         var b;
         t: {
             b = -Infinity;
-            for (var c = Infinity, count = this.T.getStreamCount(), e = 0; e < count; e++)
-                if (this.o.isStreamEnabled(e)) {
-                    var f = this.o.qa(e);
+            for (var c = Infinity, count = this.T.getStreamCount(), index = 0; index < count; index++)
+                if (this.protocol.isStreamEnabled(index)) {
+                    var f = this.protocol.qa(index);
                     if (!f) {
                         b = null;
                         break t
@@ -5773,29 +5773,29 @@
                 end: c
             }
         }
-        void 0 === a && (a = 1);
+        void 0 === opt_stateMask && (opt_stateMask = 1);
         c = {};
-        a & 1 && (c.underflow = this.rd || this.Bb);
-        a & 2 && (c.seekable = b ? {
+        opt_stateMask & 1 && (c.underflow = this.rd || this.autoplay);
+        opt_stateMask & 2 && (c.seekable = b ? {
             start: b.start,
             end: b.end
         } : null);
         return c
     };
     Player.prototype.getState = Player.prototype.getState;
-    Player.prototype.ya = function(a) {
-        return this.T.ya(a, this.fc())
+    Player.prototype.getBufferDuration = function(index) {
+        return this.T.getBufferDuration(index, this.fc())
     };
-    Player.prototype.getBufferDuration = Player.prototype.ya;
-    Player.prototype.ob = function() {
-        this.T.ob()
+    Player.prototype.getBufferDuration = Player.prototype.getBufferDuration;
+    Player.prototype.startLicenseRequest = function() {
+        this.T.startLicenseRequest()
     };
-    Player.prototype.startLicenseRequest = Player.prototype.ob;
+    Player.prototype.startLicenseRequest = Player.prototype.startLicenseRequest;
     var ch = function(a) {
         a.mb && (a.me = !1, a.mb.dispose(), a.mb = null)
     };
-    Player.prototype.hh = function(a, b, c) {
-        b ? a ? "cea608" === b ? (this.me = !0, this.mb = new ah(this, this.c.mediaElement)) : c && (this.mb = new fe(this, this.c, b, c)) : ch(this) : this.T.update()
+    Player.prototype.enableCaptions = function(enable, opt_type, opt_url) {
+        opt_type ? enable ? "cea608" === opt_type ? (this.me = !0, this.mb = new ah(this, this.host.mediaElement)) : opt_url && (this.mb = new fe(this, this.host, opt_type, opt_url)) : ch(this) : this.T.update()
     };
-    Player.prototype.enableCaptions = Player.prototype.hh;
+    Player.prototype.enableCaptions = Player.prototype.enableCaptions;
 }).call(window);
