@@ -1,7 +1,43 @@
-// Copyright Google Inc. All Rights Reserved.
+// Copyright Google Inc. All R
+// ights Reserved.
 (function() {
     'use strict';
-    var h, aa = aa || {},
+    var MOVIE_BOX = 1836019574; // moov
+    var MOVIE_FRAGMENT_BOX = 1836019558; // moof
+    var MOVIE_EXTENDS_BOX = 1836475768; // mvex
+
+    var TRACK_BOX = 1953653099; // trak
+    var TRACK_FRAGMENT_BOX = 1953653094; // traf
+    var EDIT_BOX = 1701082227; // edts
+    var MEDIA_BOX = 1835297121; // mdia
+    var MEDIA_INFORMATION_BOX = 1835626086; // minf
+    var DATA_INFORMATION_BOX = 1684631142; // dinf
+    var SAMPLE_TABLE_BOX = 1937007212; // stbl
+
+    var TRACK_FRAGMENT_RUN_BOX = 1953658222; // trun
+    var EXTENDED_TYPE = 1970628964; // uuid
+    var ESD_BOX = 1702061171; // esds
+    var HANDLER_BOX = 1751411826; // hdlr
+    var MEDIA_HEADER_BOX = 1835296868; // mdhd
+    var MOVIE_FRAGMENT_HEADER_BOX = 1835427940; // mfhd
+    var MOVIE_HEADER_BOX = 1836476516; // mvhd
+    var SYNC_SAMPLE_BOX = 1937011571; // stss
+
+    var SCHEME_TYPE_BOX = 1935894637; // schm
+    var TRACK_EXTENDS_BOX = 1953654136; // trex
+    var TRACK_HEADER_BOX = 1953196132; // tkhd
+    var TRACK_FRAGMENT_HEADER_BOX = 1952868452; // tfhd
+    var MP4A_SAMPLE_ENTRY = 1836069985; // mp4a
+    var ENCRYPTED_AUDIO_SAMPLE_ENTRY = 1701733217; // enca
+    var ENCRYPTED_VIDEO_SAMPLE_ENTRY = 1701733238; // encv
+    var AVC_SAMPLE_ENTRY = 1635148593; // avc1
+    var SAMPLE_DESCRIPTION_BOX = 1937011556; // stsd
+    var PROTECTION_SCHEME_INFORMATION_BOX = 1936289382; // sinf
+    var SCHEME_INFORMATION_BOX = 1935894633; // schi
+    var AVC_SPECIFIC_BOX = 1635148611; // avcC
+    var ORIGINAL_FORMAT_BOX = 1718775137; // frma
+
+  var h, aa = aa || {},
         self = this,
         ba = function(a) {
             a = a.split(".");
@@ -3278,20 +3314,20 @@
             this.Rb = L(this.A);
             this.Ia += 4;
             1 === this.qb && (this.qb = td(this.A), this.Ia += 8);
-            1970628964 === this.Rb && (this.sc = new jd(ud(this.A, 16)), this.Ia += 16)
+            EXTENDED_TYPE === this.Rb && (this.sc = new jd(ud(this.A, 16)), this.Ia += 16)
         },
         Se = function(a) {
             switch (a.Rb) {
-                case 1836019574:
-                case 1836019558:
-                case 1836475768:
-                case 1953653099:
-                case 1953653094:
-                case 1701082227:
-                case 1835297121:
-                case 1835626086:
-                case 1684631142:
-                case 1937007212:
+                case MOVIE_BOX:
+                case MOVIE_FRAGMENT_BOX:
+                case MOVIE_EXTENDS_BOX:
+                case TRACK_BOX:
+                case TRACK_FRAGMENT_BOX:
+                case EDIT_BOX:
+                case MEDIA_BOX:
+                case MEDIA_INFORMATION_BOX:
+                case DATA_INFORMATION_BOX:
+                case SAMPLE_TABLE_BOX:
                     return !0;
                 default:
                     return !1
@@ -3415,59 +3451,59 @@
     };
     inherit(bf, Re);
     bf.prototype.Ud = function(a, b) {
-        var c = cf(U(this), 1953653094, void 0, void 0);
+        var c = cf(U(this), TRACK_FRAGMENT_BOX, void 0, void 0);
         if (c) {
-            var d = cf(U(c), 1953658222, void 0, void 0);
+            var d = cf(U(c), TRACK_FRAGMENT_RUN_BOX, void 0, void 0);
             d && d.Ud(a - this.Pd.byteOffset);
             b && (c = cf(U(c), 1935763823, void 0, void 0)) && Qe(U(c), 4, b - this.Pd.byteOffset)
         }
     };
     var df = function(a, b) {
-            var c = cf(a, 1836019558),
+            var c = cf(a, MOVIE_FRAGMENT_BOX),
                 d = U(cf(a, 1835295092)).byteOffset;
             b ? c.Ud(d + b, d) : c.Ud(d)
         },
         ef = function(a) {
             switch (a.getName()) {
-                case 1836019558:
+                case MOVIE_FRAGMENT_BOX:
                     return new bf(Te(a));
-                case 1953658222:
+                case TRACK_FRAGMENT_RUN_BOX:
                     return new Ze(Te(a));
                 case 1935763823:
                     return new af(Te(a));
                 case 1936286840:
                     return new We(Te(a));
-                case 1952868452:
+                case TRACK_FRAGMENT_HEADER_BOX:
                     return new $e(Te(a));
-                case 1970628964:
+                case EXTENDED_TYPE:
                     var b = a.sc;
                     return Ye.equals(b) ? new Xe(Te(a)) : Ve.equals(b) ? new Ue(Te(a)) : a;
-                case 1702061171:
-                case 1751411826:
-                case 1835296868:
-                case 1835427940:
-                case 1836476516:
+                case ESD_BOX:
+                case HANDLER_BOX:
+                case MEDIA_HEADER_BOX:
+                case MOVIE_FRAGMENT_HEADER_BOX:
+                case MOVIE_HEADER_BOX:
                 case 1886614376:
                 case 1935763823:
                 case 1935763834:
-                case 1935894637:
-                case 1937011571:
+                case SCHEME_TYPE_BOX:
+                case SYNC_SAMPLE_BOX:
                 case 1952804451:
                 case 1952867444:
-                case 1952868452:
-                case 1953196132:
-                case 1953654136:
-                case 1953658222:
+                case TRACK_FRAGMENT_HEADER_BOX:
+                case TRACK_HEADER_BOX:
+                case TRACK_EXTENDS_BOX:
+                case TRACK_FRAGMENT_RUN_BOX:
                     return new V(Te(a));
                 default:
                     return a
             }
         },
-        cf = function(a, b, c, d) {
+  cf = function(a, b, c, d) {
             for (var e = 0; e < a.length;) {
                 var f = new Re(a.subarray(e)),
                     e = e + f.qb;
-                if (f.getName() === b && (1970628964 !== b || c && c.equals(f.sc))) return ef(f);
+                if (f.getName() === b && (EXTENDED_TYPE !== b || c && c.equals(f.sc))) return ef(f);
                 if (d && Se(f) && (f = cf(U(f), b, c, d))) return f
             }
             return null
@@ -3722,7 +3758,7 @@
         var d = this.streams[index],
             e = d.s[d.qualityLevel];
         if (d.ca)
-            if (d.ca = !1, d = (d = cf(b, 1836019574)) ? Te(d) : null, null === d) LOGE(this.a, "no init"), K(this.host, 1);
+            if (d.ca = !1, d = (d = cf(b, MOVIE_BOX)) ? Te(d) : null, null === d) LOGE(this.a, "no init"), K(this.host, 1);
             else {
                 if (!e.D && 0 === e.g.length) {
                     b = (b = cf(b, 1936286840)) ? b.$d() : null;
@@ -3801,7 +3837,7 @@
         0 === this.Jf && M(this.b, this.Lf)
     };
     var lf = function(a, b) {
-        Y.call(this, 1702061171, 0, 0);
+        Y.call(this, ESD_BOX, 0, 0);
         this.Hg = a;
         this.Ac = b
     };
@@ -3810,7 +3846,7 @@
         M(this.b, [3, 25, 0, 1, 0, 4, 17, this.Hg, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 2, this.Ac[0], this.Ac[1]])
     };
     var mf = function(a, b) {
-        X.call(this, 1635148611);
+        X.call(this, AVC_SPECIFIC_BOX);
         this.Mf = a;
         this.Kf = b
     };
@@ -3826,7 +3862,7 @@
         M(this.b, this.Kf)
     };
     var nf = function() {
-        Y.call(this, 1937011571, 0, 0)
+        Y.call(this, SYNC_SAMPLE_BOX, 0, 0)
     };
     inherit(nf, Y);
     nf.prototype.writeBody = function() {
@@ -3843,7 +3879,7 @@
         M(this.b, this.Gg.ad)
     };
     var pf = function(a, b) {
-        Y.call(this, 1935894637, 0, 0);
+        Y.call(this, SCHEME_TYPE_BOX, 0, 0);
         this.Jg = a;
         this.Kg = b
     };
@@ -3853,7 +3889,7 @@
         N(this.b, this.Kg)
     };
     var qf = function(a) {
-        X.call(this, 1718775137);
+        X.call(this, ORIGINAL_FORMAT_BOX);
         this.Ng = a
     };
     inherit(qf, X);
@@ -3861,7 +3897,7 @@
         N(this.b, this.Ng)
     };
     var rf = function(a) {
-        Y.call(this, 1751411826, 0, 0);
+        Y.call(this, HANDLER_BOX, 0, 0);
         this.Pg = a
     };
     inherit(rf, Y);
@@ -3871,7 +3907,7 @@
         M(this.b, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
     };
     var sf = function(a) {
-        Y.call(this, 1835296868, 0, 0);
+        Y.call(this, MEDIA_HEADER_BOX, 0, 0);
         this.Na = a
     };
     inherit(sf, Y);
@@ -3883,7 +3919,7 @@
         M(this.b, [85, 196, 0, 0])
     };
     var tf = function(a, b) {
-        Y.call(this, 1953196132, 0, 3);
+        Y.call(this, TRACK_HEADER_BOX, 0, 3);
         this.Lg = a;
         this.Ig = b
     };
@@ -3896,7 +3932,7 @@
         N(this.b, this.Ig << 16)
     };
     var uf = function() {
-        Y.call(this, 1953654136, 0, 0)
+        Y.call(this, TRACK_EXTENDS_BOX, 0, 0)
     };
     inherit(uf, Y);
     uf.prototype.writeBody = function() {
@@ -3914,7 +3950,7 @@
         M(this.b, this.wb)
     };
     var wf = function(a) {
-        Y.call(this, 1836476516, 0, 0);
+        Y.call(this, MOVIE_HEADER_BOX, 0, 0);
         this.Na = a
     };
     inherit(wf, Y);
@@ -3925,7 +3961,7 @@
         M(this.b, [0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 64, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2])
     };
     var xf = function(a) {
-        Y.call(this, 1952868452, 0, 8);
+        Y.call(this, TRACK_FRAGMENT_HEADER_BOX, 0, 8);
         this.Og = a
     };
     inherit(xf, Y);
@@ -3934,7 +3970,7 @@
         N(this.b, this.Og)
     };
     var yf = function(a) {
-        Y.call(this, 1953658222, 0, 513);
+        Y.call(this, TRACK_FRAGMENT_RUN_BOX, 0, 513);
         this.Ne = a
     };
     inherit(yf, Y);
@@ -3944,7 +3980,7 @@
         for (var a = 0; a < this.Ne.length; a++) N(this.b, this.Ne[a].length)
     };
     var zf = function(a) {
-        Y.call(this, 1835427940, 0, 0);
+        Y.call(this, MOVIE_FRAGMENT_HEADER_BOX, 0, 0);
         this.bb = a
     };
     inherit(zf, Y);
@@ -3960,7 +3996,7 @@
         for (var a = 0; a < this.Rf.length; a++) M(this.b, this.Rf[a])
     };
     var Df = function(a) {
-        X.call(this, 1970628964, Bf);
+        X.call(this, EXTENDED_TYPE, Bf);
         this.Mg = a
     };
     inherit(Df, X);
@@ -4168,7 +4204,7 @@
         return this.L.length;
     };
     var Lf = function(a, b, c) {
-        X.call(this, 1836019558);
+        X.call(this, MOVIE_FRAGMENT_BOX);
         this.j = {
             wg: a,
             vg: b,
@@ -4181,7 +4217,7 @@
         (new Mf(this.j)).i(this.b)
     };
     var Mf = function(a) {
-        X.call(this, 1953653094);
+        X.call(this, TRACK_FRAGMENT_BOX);
         this.j = a
     };
     inherit(Mf, X);
@@ -4191,7 +4227,7 @@
         (new yf(this.j.xg)).i(this.b)
     };
     var Nf = function(a, b) {
-        X.call(this, 1836019558);
+        X.call(this, MOVIE_FRAGMENT_BOX);
         this.Vc = b;
         this.Bg = a
     };
@@ -4200,7 +4236,7 @@
         for (var a = ff(U(this.Bg), void 0); 0 < a.length;) {
             var b = a.shift();
             switch (b.getName()) {
-                case 1953653094:
+                case TRACK_FRAGMENT_BOX:
                     (new Of(b, this.Vc)).i(this.b);
                     break;
                 default:
@@ -4209,7 +4245,7 @@
         }
     };
     var Of = function(a, b) {
-        X.call(this, 1953653094);
+        X.call(this, TRACK_FRAGMENT_BOX);
         this.Vc = b;
         this.yg = a
     };
@@ -4218,14 +4254,14 @@
         for (var a = ff(U(this.yg), void 0), b = null; 0 < a.length;) {
             var c = a.shift();
             switch (c.getName()) {
-                case 1970628964:
+                case EXTENDED_TYPE:
                     c instanceof Xe && (b = c);
                     break;
-                case 1952868452:
+                case TRACK_FRAGMENT_HEADER_BOX:
                     Qe(U(c), 0, 1);
                     c.i(this.b);
                     break;
-                case 1953658222:
+                case TRACK_FRAGMENT_RUN_BOX:
                     (new Pf(c)).i(this.b);
                     break;
                 default:
@@ -4235,7 +4271,7 @@
         b && ((new kf(b.Ce ? 0 : 8, b.Jd)).i(this.b), (new hf(0)).i(this.b))
     };
     var Pf = function(a) {
-        Y.call(this, 1953658222, a.ka, a.qc | 1);
+        Y.call(this, TRACK_FRAGMENT_RUN_BOX, a.ka, a.qc | 1);
         this.Gf = a
     };
     inherit(Pf, Y);
@@ -4265,7 +4301,7 @@
             this.video = f
         },
         Tf = function(a) {
-            X.call(this, 1836019574);
+            X.call(this, MOVIE_BOX);
             this.j = a
         };
     inherit(Tf, X);
@@ -4277,7 +4313,7 @@
         (new Vf(this.j)).i(this.b)
     };
     var Vf = function(a) {
-        X.call(this, 1953653099);
+        X.call(this, TRACK_BOX);
         this.j = a
     };
     inherit(Vf, X);
@@ -4290,7 +4326,7 @@
         (new Wf(this.j)).i(this.b)
     };
     var Wf = function(a) {
-        X.call(this, 1835297121);
+        X.call(this, MEDIA_BOX);
         this.j = a
     };
     inherit(Wf, X);
@@ -4300,7 +4336,7 @@
         (new Xf(this.j)).i(this.b)
     };
     var Xf = function(a) {
-        X.call(this, 1835626086);
+        X.call(this, MEDIA_INFORMATION_BOX);
         this.j = a
     };
     inherit(Xf, X);
@@ -4308,7 +4344,7 @@
         (new Yf(this.j)).i(this.b)
     };
     var Yf = function(a) {
-        X.call(this, 1937007212);
+        X.call(this, SAMPLE_TABLE_BOX);
         this.j = a
     };
     inherit(Yf, X);
@@ -4317,7 +4353,7 @@
         this.j.video && (new nf).i(this.b)
     };
     var Zf = function(a) {
-        Y.call(this, 1937011556, 0, 0);
+        Y.call(this, SAMPLE_DESCRIPTION_BOX, 0, 0);
         this.j = a
     };
     inherit(Zf, Y);
@@ -4326,7 +4362,7 @@
         (this.j.video ? new $f(this.j) : new ag(this.j)).i(this.b)
     };
     var ag = function(a) {
-        X.call(this, a.Oa ? 1701733217 : 1836069985);
+        X.call(this, a.Oa ? ENCRYPTED_AUDIO_SAMPLE_ENTRY : MP4A_SAMPLE_ENTRY);
         this.j = a
     };
     inherit(ag, X);
@@ -4337,7 +4373,7 @@
         this.j.Oa && (new bg(this.j)).i(this.b)
     };
     var $f = function(a) {
-        X.call(this, a.Oa ? 1701733238 : 1635148593);
+        X.call(this, a.Oa ? ENCRYPTED_VIDEO_SAMPLE_ENTRY : AVC_SAMPLE_ENTRY);
         this.j = a
     };
     inherit($f, X);
@@ -4352,7 +4388,7 @@
         this.j.Oa && (new bg(this.j)).i(this.b)
     };
     var Uf = function(a) {
-        X.call(this, 1836475768);
+        X.call(this, MOVIE_EXTENDS_BOX);
         this.j = a
     };
     inherit(Uf, X);
@@ -4360,7 +4396,7 @@
         (new uf).i(this.b)
     };
     var bg = function(a) {
-        X.call(this, 1936289382);
+        X.call(this, PROTECTION_SCHEME_INFORMATION_BOX);
         this.j = a
     };
     inherit(bg, X);
@@ -4370,7 +4406,7 @@
         (new cg(this.j)).i(this.b)
     };
     var cg = function(a) {
-        X.call(this, 1935894633);
+        X.call(this, SCHEME_INFORMATION_BOX);
         this.j = a
     };
     inherit(cg, X);
@@ -4379,11 +4415,11 @@
         a && a.Hd && (new of(a.Ae, a.Hd)).i(this.b)
     };
     var dg = function(a, b, c, d, e) {
-        Tf.call(this, new Sf(a, b, 1836069985, 1936684398, new Qf(c, d, e), null))
+        Tf.call(this, new Sf(a, b, MP4A_SAMPLE_ENTRY, 1936684398, new Qf(c, d, e), null))
     };
     inherit(dg, Tf);
     var eg = function(a, b, c, d, e, f) {
-        Tf.call(this, new Sf(a, b, 1635148593, 1986618469, null, new Rf(c, d, e, f)))
+        Tf.call(this, new Sf(a, b, AVC_SAMPLE_ENTRY, 1986618469, null, new Rf(c, d, e, f)))
     };
     inherit(eg, Tf);
     var fg = function(a) {
@@ -5065,7 +5101,7 @@
                 if (!(a.index + 1 < f.length)) {
                     var g;
                     g = this.Na;
-                    var k = cf(b, 1970628964, Ve, !0);
+                    var k = cf(b, EXTENDED_TYPE, Ve, !0);
                     g = k ? k.$d(g) : null;
                     if (null === g) LOGW(this.a, "no new segments");
                     else
@@ -5085,8 +5121,8 @@
                 for (b = 0; 0 < g.length;) {
                     var q = g.shift();
                     switch (q.getName()) {
-                        case 1836019558:
-                            l = cf(U(q), 1970628964, Ye, !0);
+                        case MOVIE_FRAGMENT_BOX:
+                            l = cf(U(q), EXTENDED_TYPE, Ye, !0);
                             (new Nf(q, f)).i(k);
                             break;
                         case 1835295092:
